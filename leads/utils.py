@@ -14,10 +14,10 @@ from django.utils.encoding import force_text
 from django.urls import reverse
 
 from .learn import compute_leads_state, compute_leads_tags, compute_lead_similarity
-from ..staffing.models import Mission
+from staffing.models import Mission
 from .models import StateProba
-from ..core.utils import send_lead_mail, get_parameter
-from ..engine.pydici_settings import TELEGRAM_IS_ENABLED, TELEGRAM_CHAT, TELEGRAM_TOKEN, TELEGRAM_STICKERS
+from core.utils import send_lead_mail, get_parameter
+from engine.pydici_settings import TELEGRAM_IS_ENABLED, TELEGRAM_CHAT, TELEGRAM_TOKEN, TELEGRAM_STICKERS
 
 if TELEGRAM_IS_ENABLED:
     import telegram
@@ -98,7 +98,7 @@ def postSaveLead(request, lead, updated_fields, created=False, state_changed=Fal
         except Exception as e:
             messages.add_message(request, messages.ERROR, ugettext("Failed to send telegram notification: %s") % e)
 
-    # Compute leads probability
+    # Вычислить вероятность лидов
     if sync:
         compute = compute_leads_state.now  # Select synchronous flavor of computation function
     else:

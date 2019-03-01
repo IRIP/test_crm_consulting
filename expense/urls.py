@@ -6,7 +6,7 @@
 
 from django.conf.urls import url
 from .tables import ExpenseTableDT, ExpensePaymentTableDT
-from ..expense import views as v
+from expense import views as v
 
 
 expense_urls = [url(r'^$', v.expenses, name="expenses"),

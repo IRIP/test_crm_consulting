@@ -5,8 +5,8 @@
 """
 
 from django.conf.urls import url
-from ..staffing import views as v
-from ..staffing import tables as t
+from staffing import views as v
+from staffing import tables as t
 
 staffing_urls = [url(r'^pdcreview/?$', v.pdc_review, name='pdcreview-index'),
                  url(r'^pdcreview/(?P<year>\d+)/(?P<month>\d+)/?$', v.pdc_review, name='pdcreview'),

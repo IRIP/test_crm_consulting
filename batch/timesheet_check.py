@@ -34,9 +34,9 @@ from django.template.loader import get_template
 application = get_wsgi_application()
 
 # Pydici imports
-from ..core.utils import get_parameter
-from ..people.models import Consultant
-from ..staffing.utils import gatherTimesheetData
+from core.utils import get_parameter
+from people.models import Consultant
+from staffing.utils import gatherTimesheetData
 
 
 def warnForImcompleteTimesheet(warnSurbooking=False, days=None, month=None):

@@ -6,8 +6,8 @@
 
 from django.conf.urls import url
 
-from ..crm import views as v
-from ..crm import tables as t
+from crm import views as v
+from crm import tables as t
 
 crm_urls = [
             url(r'^contact/add/$', v.ContactCreate.as_view(), name='contact_create'),

@@ -6,7 +6,7 @@ Actions form setup
 """
 from django import forms
 
-from ..core.forms import UserChoices
+from core.forms import UserChoices
 
 
 class DelegateActionForm(forms.Form):

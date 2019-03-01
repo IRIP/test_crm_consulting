@@ -10,7 +10,7 @@ from django.utils.translation import ugettext as _
 from django.urls import reverse
 
 from .models import Staffing, Mission
-from ..people.models import Consultant
+from people.models import Consultant
 
 
 class StaffingFeed(Feed):

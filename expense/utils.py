@@ -30,7 +30,7 @@ For groups control permissions around this simple workflow:
 from django.core.cache import cache
 
 from .models import EXPENSE_STATES, EXPENSE_TRANSITION_TO_STATES
-from ..people.models import Consultant
+from people.models import Consultant
 
 
 def expense_next_states(expense, user):

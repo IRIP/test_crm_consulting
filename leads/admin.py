@@ -12,7 +12,7 @@ from .models import Lead
 
 from .forms import LeadForm
 from .utils import postSaveLead
-from ..core.admin import ReturnToAppAdmin
+from core.admin import ReturnToAppAdmin
 
 
 class LeadAdmin(ReturnToAppAdmin):

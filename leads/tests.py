@@ -12,13 +12,13 @@ from django.contrib.messages.storage import default_storage
 from django.contrib.auth.models import User
 from django.conf import settings
 
-from ..people.models import Consultant
+from people.models import Consultant
 from .models import Lead
-from ..staffing.models import Mission
-from ..crm.models import Subsidiary, BusinessBroker, Client
-from ..core.tests import PYDICI_FIXTURES, setup_test_user_features, TEST_USERNAME, PREFIX
-from ..leads import learn as leads_learn
-from ..leads.utils import postSaveLead
+from staffing.models import Mission
+from crm.models import Subsidiary, BusinessBroker, Client
+from core.tests import PYDICI_FIXTURES, setup_test_user_features, TEST_USERNAME, PREFIX
+from leads import learn as leads_learn
+from leads.utils import postSaveLead
 
 
 

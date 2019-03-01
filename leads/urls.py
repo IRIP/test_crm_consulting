@@ -6,7 +6,7 @@
 
 from django.conf.urls import url
 from .tables import LeadTableDT, ActiveLeadTableDT, RecentArchivedLeadTableDT, ClientCompanyLeadTableDT, LeadToBill
-from ..leads import views as v
+from leads import views as v
 
 
 leads_urls = [url(r'^review', v.review, name="review"),

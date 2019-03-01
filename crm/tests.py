@@ -10,9 +10,9 @@ from django.urls import reverse as urlresolvers
 from django.contrib.auth.models import Group, User
 
 from .models import Client, Subsidiary
-from ..people.models import Consultant, ConsultantProfile
-from ..staffing.models import Mission
-from ..core.tests import PYDICI_FIXTURES, setup_test_user_features, TEST_USERNAME
+from people.models import Consultant, ConsultantProfile
+from staffing.models import Mission
+from core.tests import PYDICI_FIXTURES, setup_test_user_features, TEST_USERNAME
 
 import json
 

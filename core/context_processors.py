@@ -10,7 +10,7 @@ from importlib import import_module
 
 from django.conf import settings
 
-from ..core.utils import user_has_feature
+from core.utils import user_has_feature
 
 
 class FeatureWrapper(object):

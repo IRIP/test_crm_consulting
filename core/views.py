@@ -22,13 +22,13 @@ from django_select2.views import AutoResponseView
 from taggit.models import Tag
 
 from .decorator import pydici_non_public, pydici_feature, PydiciNonPublicdMixin
-from ..leads.models import Lead
-from ..people.models import Consultant
-from ..crm.models import Company, Contact, Subsidiary
-from ..staffing.models import Mission, FinancialCondition, Staffing, Timesheet
-from ..billing.models import ClientBill
-from ..expense.models import Expense
-from ..people.views import consultant_home
+from leads.models import Lead
+from people.models import Consultant
+from crm.models import Company, Contact, Subsidiary
+from staffing.models import Mission, FinancialCondition, Staffing, Timesheet
+from billing.models import ClientBill
+from expense.models import Expense
+from people.views import consultant_home
 from .utils import nextMonth, previousMonth
 
 

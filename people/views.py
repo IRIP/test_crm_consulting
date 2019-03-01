@@ -11,10 +11,10 @@ from django.shortcuts import render, redirect
 from django.http import Http404
 
 from .models import Consultant
-from ..crm.models import Company
-from ..staffing.models import Holiday, Timesheet
-from ..core.decorator import pydici_non_public
-from ..core.utils import working_days, previousMonth, nextMonth
+from crm.models import Company
+from staffing.models import Holiday, Timesheet
+from core.decorator import pydici_non_public
+from core.utils import working_days, previousMonth, nextMonth
 
 
 def _consultant_home(request, consultant):

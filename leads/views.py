@@ -26,15 +26,15 @@ from django.conf import settings
 
 from taggit.models import Tag
 
-from ..core.utils import send_lead_mail, sortedValues, COLORS, get_parameter
+from core.utils import send_lead_mail, sortedValues, COLORS, get_parameter
 from .models import Lead
 from .forms import LeadForm
 from .utils import postSaveLead
 from .learn import compute_leads_state, compute_lead_similarity
 from .learn import predict_tags, predict_similar
-from ..core.utils import capitalize, getLeadDirs, createProjectTree, compact_text, get_fiscal_years
-from ..core.decorator import pydici_non_public, pydici_feature
-from ..people.models import Consultant
+from core.utils import capitalize, getLeadDirs, createProjectTree, compact_text, get_fiscal_years
+from core.decorator import pydici_non_public, pydici_feature
+from people.models import Consultant
 
 
 @pydici_non_public

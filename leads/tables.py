@@ -13,7 +13,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 from datetime import datetime, timedelta
 
 from .models import Lead
-from ..core.decorator import PydiciFeatureMixin, PydiciNonPublicdMixin
+from core.decorator import PydiciFeatureMixin, PydiciNonPublicdMixin
 
 
 class LeadsViewsReadMixin(PydiciNonPublicdMixin, PydiciFeatureMixin):

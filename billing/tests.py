@@ -9,10 +9,10 @@ Test cases for billing module
 from django.test import TestCase, TransactionTestCase
 from django.db import IntegrityError
 
-from ..crm.models import Supplier, Client
+from crm.models import Supplier, Client
 from .models import SupplierBill, ClientBill
-from ..leads.models import Lead
-from ..core.tests import PYDICI_FIXTURES
+from leads.models import Lead
+from core.tests import PYDICI_FIXTURES
 
 from datetime import date
 

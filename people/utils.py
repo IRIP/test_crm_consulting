@@ -11,7 +11,7 @@ from django.db.models import Count
 from django.utils.translation import ugettext as _
 
 from .models import Consultant
-from ..crm.models import Subsidiary
+from crm.models import Subsidiary
 
 def getScopes(subsidiary, team, target="all"):
     """Define scopes than can be used to filter data. Either team, subsidiary or everybody (default). Format is (type, filter, label) where type is "team_id" or "subsidiary_id".

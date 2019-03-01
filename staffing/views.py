@@ -32,19 +32,19 @@ from django.template.loader import get_template
 from django_weasyprint import WeasyTemplateView
 
 from .models import Staffing, Mission, Holiday, Timesheet, FinancialCondition, LunchTicket
-from ..people.models import Consultant, Subsidiary
-from ..leads.models import Lead
-from ..people.models import ConsultantProfile
+from people.models import Consultant, Subsidiary
+from leads.models import Lead
+from people.models import ConsultantProfile
 from .forms import ConsultantStaffingInlineFormset, MissionStaffingInlineFormset, \
     TimesheetForm, MassStaffingForm, MissionContactsForm
-from ..core.utils import working_days, nextMonth, previousMonth, daysOfMonth, previousWeek, nextWeek, monthWeekNumber, \
+from core.utils import working_days, nextMonth, previousMonth, daysOfMonth, previousWeek, nextWeek, monthWeekNumber, \
     to_int_or_round, COLORS, convertDictKeyToDate, cumulateList, user_has_feature, get_parameter, get_fiscal_years
-from ..core.decorator import pydici_non_public, pydici_feature, PydiciNonPublicdMixin
+from core.decorator import pydici_non_public, pydici_feature, PydiciNonPublicdMixin
 from .utils import gatherTimesheetData, saveTimesheetData, saveFormsetAndLog, \
     sortMissions, holidayDays, staffingDates, time_string_for_day_percent, compute_automatic_staffing, \
     timesheet_report_data
 from .forms import MissionForm, MissionAutomaticStaffingForm
-from ..people.utils import getScopes
+from people.utils import getScopes
 
 TIMESTRING_FORMATTER = {
     'cycle': formats.number_format,

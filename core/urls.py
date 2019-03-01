@@ -5,7 +5,7 @@
 """
 
 from django.conf.urls import url
-from ..core import views as v
+from core import views as v
 
 core_urls = [url(r'^$', v.index, name='index'),
              url(r'^search$', v.search, name='search'),

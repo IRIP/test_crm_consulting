@@ -13,7 +13,7 @@ from django.utils.safestring import mark_safe
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from .models import Mission
-from ..core.decorator import PydiciFeatureMixin, PydiciNonPublicdMixin
+from core.decorator import PydiciFeatureMixin, PydiciNonPublicdMixin
 
 
 class MissionsViewsMixin(PydiciNonPublicdMixin, PydiciFeatureMixin):

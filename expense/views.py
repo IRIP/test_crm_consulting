@@ -21,10 +21,10 @@ from django.contrib import messages
 from .forms import ExpenseForm, ExpensePaymentForm
 from .models import Expense, ExpensePayment
 from .tables import ExpenseTable, UserExpenseWorkflowTable, ManagedExpenseWorkflowTable
-from ..leads.models import Lead
-from ..core.decorator import pydici_non_public, pydici_feature
-from ..core.views import tableToCSV
-from ..core import utils
+from leads.models import Lead
+from core.decorator import pydici_non_public, pydici_feature
+from core.views import tableToCSV
+from core import utils
 from .utils import expense_next_states, can_edit_expense, in_terminal_state, user_expense_perm, user_expense_team
 
 

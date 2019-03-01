@@ -18,10 +18,10 @@ import django_tables2 as tables
 from django_tables2.utils import A
 
 from .models import Expense, ExpensePayment
-from ..people.models import Consultant
-from ..core.templatetags.pydici_filters import link_to_consultant
-from ..core.utils import TABLES2_HIDE_COL_MD, to_int_or_round
-from ..core.decorator import PydiciFeatureMixin, PydiciNonPublicdMixin
+from people.models import Consultant
+from core.templatetags.pydici_filters import link_to_consultant
+from core.utils import TABLES2_HIDE_COL_MD, to_int_or_round
+from core.decorator import PydiciFeatureMixin, PydiciNonPublicdMixin
 from .utils import expense_state_display, expense_transition_to_state_display, user_expense_perm
 
 

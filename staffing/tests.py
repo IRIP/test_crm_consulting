@@ -11,12 +11,12 @@ from django.core.cache import cache
 from django.core import urlresolvers
 from django.contrib.auth.models import User
 
-from ..staffing import utils
-from ..leads.models import Lead
+from staffing import utils
+from leads.models import Lead
 from .models import Mission, Staffing, Timesheet, FinancialCondition
-from ..people.models import Consultant, RateObjective
-from ..core.utils import previousMonth, nextMonth
-from ..core.tests import PYDICI_FIXTURES, TEST_USERNAME, setup_test_user_features
+from people.models import Consultant, RateObjective
+from core.utils import previousMonth, nextMonth
+from core.tests import PYDICI_FIXTURES, TEST_USERNAME, setup_test_user_features
 
 from datetime import date
 

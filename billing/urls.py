@@ -5,8 +5,8 @@
 """
 
 from django.conf.urls import url
-from ..billing import views as v
-from ..billing import tables as t
+from billing import views as v
+from billing import tables as t
 
 
 

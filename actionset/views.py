@@ -13,7 +13,7 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 
 from .models import ActionSet, ActionState
-from ..core.decorator import pydici_non_public, pydici_feature
+from core.decorator import pydici_non_public, pydici_feature
 
 
 @pydici_non_public

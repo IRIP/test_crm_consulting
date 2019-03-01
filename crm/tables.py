@@ -9,7 +9,8 @@ from django.template.loader import get_template
 from django.db.models import Q
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from ..core.decorator import PydiciFeatureMixin, PydiciNonPublicdMixin
+
+from core.decorator import PydiciFeatureMixin, PydiciNonPublicdMixin
 from .views import ThirdPartyMixin
 from .models import Contact
 

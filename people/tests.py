@@ -11,12 +11,12 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.cache import cache
 
-from ..crm.models import Subsidiary
+from crm.models import Subsidiary
 from .models import Consultant, ConsultantProfile, RateObjective
-from ..staffing.models import Mission, Timesheet, FinancialCondition
-from ..leads.models import Lead
-from ..core.utils import nextMonth, previousMonth
-from ..core.tests import PYDICI_FIXTURES, setup_test_user_features, TEST_USERNAME
+from staffing.models import Mission, Timesheet, FinancialCondition
+from leads.models import Lead
+from core.utils import nextMonth, previousMonth
+from core.tests import PYDICI_FIXTURES, setup_test_user_features, TEST_USERNAME
 
 
 class PeopleModelTest(TestCase):

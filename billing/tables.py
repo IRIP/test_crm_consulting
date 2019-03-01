@@ -11,12 +11,12 @@ from django.db.models import Q
 from django.utils.safestring import mark_safe
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from ..core.decorator import PydiciFeatureMixin, PydiciNonPublicdMixin
-from ..core.utils import to_int_or_round
+from core.decorator import PydiciFeatureMixin, PydiciNonPublicdMixin
+from core.utils import to_int_or_round
 from .views import BillingRequestMixin
 from .models import ClientBill, SupplierBill
-from ..people.models import Consultant
-from ..leads.models import Lead
+from people.models import Consultant
+from leads.models import Lead
 
 class BillTableDT(BillingRequestMixin, BaseDatatableView):
     """Base bill table backend for datatables"""

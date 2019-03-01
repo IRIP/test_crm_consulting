@@ -10,7 +10,7 @@ from datetime import date
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from ..core.tests import PYDICI_FIXTURES
+from core.tests import PYDICI_FIXTURES
 from .models import Expense, ExpenseCategory, ExpensePayment
 from .utils import expense_next_states, can_edit_expense
 

@@ -5,7 +5,7 @@
 """
 
 from django.conf.urls import url
-from ..people import views as v
+from people import views as v
 
 
 people_urls = [url(r'^home/consultant/(?P<consultant_id>\d+)/$', v.consultant_home_by_id, name="consultant_home_by_id"),

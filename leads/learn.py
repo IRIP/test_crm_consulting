@@ -156,7 +156,7 @@ def get_lead_tag_data(lead):
 
 
 def extract_leads_tag(leads, include_leads=False):
-    """Extract leads features and targets for tag learning
+    """Извлечение лидов и целей для изучения тегов
     @:param include_leads : add leads id at the begining of features for model testing purpose"""
     features = []
     targets = []
@@ -196,7 +196,7 @@ def get_similarity_model():
     return model
 
 
-############# Model evaluation ##########################
+############# Оценка модели ##########################
 def test_state_model():
     """Test state model accuracy"""
     leads = Lead.objects.filter(state__in=list(STATES.keys()))
@@ -361,14 +361,15 @@ def predict_similar(lead):
             print("While searching for lead similarity, some lead disapeared !")
     return similar_leads
 
-############# Entry points for computation ##########################
-@background
+############# Точки входа для расчета ##########################
+# @background
 def compute_leads_state(relearn=True, leads_id=None):
-    """Изучите состояние из прошлых лидов и вычислите состояние пробного для текущих лидов.
-    Эта функция предназначена для запуска асинхронно
-     как это могло длиться несколько секунд.
+    """
+    Изучите состояние из прошлых лидов и вычислите состояние пробного для текущих лидов.
+    Эта функция предназначена для запуска асинхронно как это могло длиться несколько секунд.
     @:param learn; if true (default) learn again from leads, else, use previous computation if available
-    @:param leads_id: estimate those leads. All current leads if None. Parameter is a list of id to ease serialisation"""
+    @:param leads_id: estimate those leads. All current leads if None. Parameter is a list of id to ease serialisation
+    """
     if not HAVE_SCIKIT:
         return
     if leads_id:
@@ -382,7 +383,7 @@ def compute_leads_state(relearn=True, leads_id=None):
     if relearn or model is None:
         learn_leads = Lead.objects.filter(state__in=list(STATES.keys()))
         if learn_leads.count() < 5:
-            # Cannot learn anything with so few data
+            # Ничего не могу узнать с таким небольшим количеством данных
             return
         learn_features, learn_targets = extract_leads_state(learn_leads)
         model = get_state_model()
@@ -401,8 +402,9 @@ def compute_leads_state(relearn=True, leads_id=None):
 
 @background
 def compute_leads_tags():
-    """Learn tags from past leads and cache model"""
-
+    """
+    Узнать теги из прошлых лидов и модели кэша
+    """
     if not HAVE_SCIKIT:
         return
 

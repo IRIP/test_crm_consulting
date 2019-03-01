@@ -38,15 +38,15 @@ from PyPDF2 import PdfFileMerger, PdfFileReader
 
 from .utils import get_billing_info, create_client_bill_from_timesheet, create_client_bill_from_proportion, bill_pdf_filename
 from .models import ClientBill, SupplierBill, BillDetail, BillExpense
-from ..leads.models import Lead
-from ..people.models import Consultant
-from ..staffing.models import Timesheet, FinancialCondition, Staffing, Mission
-from ..staffing.views import MissionTimesheetReportPdf
-from ..crm.models import Subsidiary
-from ..core.utils import get_fiscal_years, get_parameter, user_has_feature
-from ..crm.models import Company
-from ..core.utils import COLORS, sortedValues, nextMonth, previousMonth
-from ..core.decorator import pydici_non_public, PydiciNonPublicdMixin, pydici_feature, PydiciFeatureMixin
+from leads.models import Lead
+from people.models import Consultant
+from staffing.models import Timesheet, FinancialCondition, Staffing, Mission
+from staffing.views import MissionTimesheetReportPdf
+from crm.models import Subsidiary
+from core.utils import get_fiscal_years, get_parameter, user_has_feature
+from crm.models import Company
+from core.utils import COLORS, sortedValues, nextMonth, previousMonth
+from core.decorator import pydici_non_public, PydiciNonPublicdMixin, pydici_feature, PydiciFeatureMixin
 from .forms import BillDetailInlineFormset, BillExpenseFormSetHelper, BillExpenseInlineFormset, BillExpenseForm
 from .forms import ClientBillForm, BillDetailForm, BillDetailFormSetHelper, SupplierBillForm
 

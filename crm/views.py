@@ -27,11 +27,11 @@ from .models import Company, Client, ClientOrganisation, Contact, Administrative
     BusinessBroker, Supplier, Subsidiary
 from .forms import ClientForm, ClientOrganisationForm, CompanyForm, ContactForm, MissionContactForm,\
     AdministrativeContactForm, BusinessBrokerForm, SupplierForm
-from ..people.models import Consultant, ConsultantProfile
-from ..leads.models import Lead
-from ..core.decorator import pydici_non_public, pydici_feature, PydiciNonPublicdMixin, PydiciFeatureMixin
-from ..core.utils import COLORS
-from ..billing.models import ClientBill
+from people.models import Consultant, ConsultantProfile
+from leads.models import Lead
+from core.decorator import pydici_non_public, pydici_feature, PydiciNonPublicdMixin, PydiciFeatureMixin
+from core.utils import COLORS
+from billing.models import ClientBill
 
 
 class ContactReturnToMixin(object):
