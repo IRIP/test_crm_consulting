@@ -1,0 +1,86 @@
+[
+    {
+        "pk": 1, 
+        "model": "crm.subsidiary", 
+        "fields": {
+            "name": "the E company",
+            "code": "E"
+        }
+    },
+    {
+        "pk": 1, 
+        "model": "crm.company", 
+        "fields": {
+            "name": "World company",
+            "code": "W"
+        }
+    },
+    {
+        "pk": 2, 
+        "model": "crm.company", 
+        "fields": {
+            "name": "Super company",
+            "code": "S"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "crm.clientorganisation", 
+        "fields": {
+            "company": 1, 
+            "name": "DSI"
+        }
+    },
+    {
+        "pk": 2, 
+        "model": "crm.clientorganisation", 
+        "fields": {
+            "company": 2, 
+            "name": "DSI"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "crm.contact", 
+        "fields": {
+            "function": "", 
+            "phone": "", 
+            "name": "Sylvester", 
+            "email": ""
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "crm.client", 
+        "fields": {
+            "organisation": 1, 
+            "contact": 1
+        }
+    },
+    {
+        "pk": 2, 
+        "model": "crm.client", 
+        "fields": {
+            "organisation": 2, 
+            "contact": 1
+        }
+    },
+    
+    {
+        "pk": 1, 
+        "model": "crm.businessbroker", 
+        "fields": {
+            "company": 1, 
+            "contact": 1
+        }
+    },
+
+    {
+        "pk": 1,
+        "model": "crm.supplier",
+        "fields": {
+            "company": 1,
+            "contact": 1
+        }
+    }
+]

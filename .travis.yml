@@ -1,0 +1,15 @@
+language: python
+
+python:
+  - "3.6"
+
+install:
+  - pip install -r requirements.txt
+  - pip install -r requirements-sklearn.txt
+
+script:
+  - python manage.py test
+
+notifications:
+  email: 
+    - sebastien.renard@digitalfox.org

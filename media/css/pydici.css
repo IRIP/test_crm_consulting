@@ -1,0 +1,437 @@
+body {
+    padding-bottom: 60px;
+    padding-top: 60px;
+}
+.navbar {
+    margin-bottom: 20px;
+}
+
+.nav li { list-style-type: none; }
+
+.table-pydici-extra-condensed > thead > tr > th, .table-pydici-extra-condensed > tbody > tr > th, .table-pydici-extra-condensed > tfoot > tr > th, .table-pydici-extra-condensed > thead > tr > td, .table-pydici-extra-condensed > tbody > tr > td, .table-pydici-extra-condensed > tfoot > tr > td {
+    padding: 0px;
+}
+
+.table-pydici-extra-condensed thead td {
+    text-align: center
+}
+.table-pydici-extra-condensed thead th {
+    text-align: center
+}
+
+.noborder {
+    border: none !important;
+}
+
+.icon-list li {
+  padding: 0 0 5px 20px;
+  display: block;
+  position: relative;
+}
+.icon-list li:before {
+  font-family: 'Glyphicons Halflings';
+  position: absolute;
+  left: 0px;
+  top:3px;
+  font-size:70%;
+  color: grey;
+}
+.chevron-right li:before {
+ content: '\e080';
+}
+
+.checkmark li:before {
+ content: '\e067';
+}
+
+.arrow-right li:before {
+ content: '\e092';
+}
+
+
+.pydici-more-less { cursor:pointer; color:grey }
+
+
+/* jquery ui customisation */
+.ui-widget-header { background:None; border:None}
+.ui-widget-content { border: None}
+
+
+/* LINKS */
+a { color: #8F6749; }
+a:link, a:visited { color: #8F6749; }
+a:hover { color: #883915; }
+
+
+/* Titles */
+h1 { font-size:20px; }
+h2 { font-size:18px; }
+h3 { font-size:16px; }
+h4 { font-size:14px; }
+
+
+/* Add alias (kind of..) on alert-error to please django admin message std class */
+.alert-error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+.alert-error hr {
+  border-top-color: #e4b9c0;
+}
+.alert-error .alert-link {
+  color: #843534;
+}
+
+.bill-total-border-left {
+     border-left: 2px solid #ddd !important;
+}
+.bill-total-border-right {
+     border-right: 2px solid #ddd !important;
+}
+.bill-total-border-top {
+     border-top: 2px solid #ddd !important;
+}
+.bill-total-border-bottom {
+     border-bottom: 2px solid #ddd !important;
+}
+.no-top-border {
+    border-top:0px !important;
+}
+
+form { margin:0; padding:0; }
+
+.pydici-block {
+    background-image:linear-gradient(#F8F8F8, white);
+}
+
+.pydici-block-title {
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+/* /* TEXT STYLES & MODIFIERS */ */
+.help, p.help { font-size:10px !important; color:#999; }
+p img, h1 img, h2 img, h3 img, h4 img, td img { vertical-align:middle; }
+.quiet, a.quiet:link, a.quiet:visited { color:#999 !important;font-weight:normal !important; }
+.quiet strong { font-weight:bold !important; }
+.float-right { float:right; }
+.float-left { float:left; }
+.clear { clear:both; }
+.align-left { text-align:left; }
+.align-right { text-align:right; }
+.example { margin:10px 0; padding:5px 10px; background:#efefef; }
+.nowrap { white-space:nowrap; }
+
+/* FORM DEFAULTS */
+input, textarea, select { margin:2px 0; padding:2px 3px; vertical-align:middle; font-weight:normal; font-size:11px; }
+textarea { vertical-align:top !important; }
+input[type=text], input[type=password], textarea, select, .vTextField { border:1px solid #ccc; background: white;}
+input:focus, textarea:focus { border:1px solid #C54B00; background:#F6F6F6; }
+
+
+.pydici-mission-timesheet > thead > tr > th, .pydici-mission-timesheet > tbody > tr > th, .pydici-mission-timesheet > tfoot > tr > th, .pydici-mission-timesheet > thead > tr > td, .pydici-mission-timesheet > tbody > tr > td, .pydici-mission-timesheet > tfoot > tr > td  { border-right:1px solid #DDDDDD;}
+.pydici-mission-timesheet {  border-left:1px solid #DDDDDD;}
+
+.timesheet-nav-btn {
+    cursor: pointer;
+    color: #8F6749;
+}
+
+.timesheet-nav-btn-disabled {
+    cursor: default;
+    color: #ccc;
+}
+
+/* Small grid like timesheet */
+.tablesmall-form-row td { padding:0px; margin:0px; vertical-align: middle;}
+.tablesmall-form-row input {  background: #F9F9F9; margin: 1px -2px;}
+.tablesmall-form-row input:focus { border:0px; }
+
+.tablesmall-form-row input.timesheet-keyboard {
+    margin: 0;
+    padding: 0;
+    width: 2.5em;
+    text-align: center;
+}
+
+.tablesmall-form-row input.timesheet-keyboard:focus {
+    border: 1px solid #8F6749;
+}
+
+.modified, .tablesmall-form-row input.modified {
+    background-color: #ffdba0 !important;
+}
+
+.tablesmall-form-row td.timesheet-error > input.timesheet-keyboard {
+    border: 1px solid red;
+    background-color: #ffeeee;
+    color: red;
+}
+
+.tablesmall-form-row td.timesheet-day, .table-holidays td.timesheet-day {
+    height: 26px;
+    width: 26px;
+    min-width: 26px;
+    max-width: 26px;
+    border: 1px solid #e6e6e6;
+    position: relative;
+    /* disable selection */
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+@font-face {
+    font-family: 'circlesmedium';
+    src: url('../fonts/circles/circles-webfont.eot');
+    src: url('../fonts/circles/circles-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/circles/circles-webfont.woff') format('woff'),
+         url('../fonts/circles/circles-webfont.ttf') format('truetype'),
+         url('../fonts/circles/circles-webfont.svg#circlesmedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.tablesmall-form-row td.timesheet-day > input[type="text"], .tablesmall-form-row td.timesheet-day-weekend > input[type="text"] {
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    border: none;
+    font-size: 20px;
+    font-family: "circlesmedium";
+    cursor: pointer;
+    padding: 0px;
+
+    /* disable selection */
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+    /* remove blinking cursor */
+    color: transparent;
+    text-shadow: 0 0 0 black;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.tablesmall-form-row td.timesheet-day-weekend > input[type="text"] {
+    background-color: LightGrey;
+}
+
+.tablesmall-form-row td.timesheet-day > input[type="text"] {
+    background: #F9F9F9;
+}
+
+.tablesmall-form-row td.timesheet-mission-label, .holidays-consultant-name {
+    text-align: left;
+    min-width: 20rem;
+    padding-right: 2px;
+}
+
+.tablesmall-form-row td.timesheet-long-day, .table-holidays td.timesheet-long-day {
+    font-size: 9px;
+    vertical-align: middle;
+}
+
+.table-holidays, .table-timesheet {
+    width: unset;
+}
+
+.table-collapsed {
+    border-collapse: collapse;
+}
+
+/* To be removed ? Need to be checked */
+ul.errorlist { margin:0 !important; padding:0 !important; }
+.errorlist li { font-size:12px !important; display:block; padding:4px 5px 4px 25px; margin:0 0 3px 0; border:1px solid red; color:white; background:red url(../img/icon_alert.gif) 5px .3em no-repeat; }
+td ul.errorlist { margin:0 !important; padding:0 !important; }
+td ul.errorlist li { margin:0 !important; }
+.form-row .object-tools { margin-top:5px; margin-bottom:5px; float:none; height:2em; padding-left:3.5em; }
+
+/* Text frame */
+.tag_banner {
+    background:#F6F6F6;
+    margin: 10px;
+    padding: 6px 8px;
+    border-radius: 8px 8px 8px 8px;
+    box-shadow: 1px 1px 2px #555;
+}
+
+/* jeditable clickable field - need to look like a link */
+.jeditable-rate, .jeditable-mission-update { color: #883915; text-decoration:none; cursor:pointer; display:inline}
+
+
+/* jqplot */
+.jqplot-point-label {
+  padding: 1px 3px;
+  background-color: rgba(220, 220, 220, 0.5);
+  color: black;
+  font-size: 1em;
+}
+.jqplot-highlighter-tooltip, .jqplot-canvasOverlay-tooltip {
+    background: none repeat scroll 0 0 rgba(208, 208, 208, 0.9);
+    font-size: 1em;
+}
+
+.hide {
+    display: none;
+}
+
+/* a slightly modified version of bootstrap glyphicon class that can be embeded in an svg. */
+.glyphicon-svg {
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+div.ui-tooltip {
+    max-width: 800px;
+    white-space: nowrap;
+}
+
+/* prevent bootstrap tooltip to wrap text and make it respect new line */
+.tooltip-inner {
+    white-space:pre;
+    max-width:none;
+}
+
+/* Style jquery autocomplete */
+.ui-autocomplete {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1100;
+  float: left;
+  display: none;
+  min-width: 160px;
+  _width: 160px;
+  padding: 4px 0;
+  margin: 2px 0 0 0;
+  list-style: none;
+  background-color: #ffffff;
+  border-color: #ccc;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+ 
+  .ui-menu-item > a.ui-corner-all {
+    display: block;
+    padding: 3px 15px;
+    clear: both;
+    font-weight: normal;
+    line-height: 18px;
+    color: #555555;
+    white-space: nowrap;
+ 
+    &.ui-state-hover, &.ui-state-active {
+      color: #ffffff;
+      text-decoration: none;
+      background-color: #0088cc;
+      border-radius: 0px;
+      -webkit-border-radius: 0px;
+      -moz-border-radius: 0px;
+      background-image: none;
+    }
+  }
+}
+
+/* C3 graph specific style */
+#consultant_rate_graph .c3-line { stroke-width: 2px; }
+
+/* Expense image in modal */
+.expense-receipt object {
+    width: 100%;
+    height: 400px;
+}
+.expense-receipt img {
+    width: 100%;
+}
+
+.modal-xxl {
+        width:80%;
+        margin-left: 10%;
+   }
+
+/* logo brand css fix for boostrap 3.4 */
+.navbar-brand>img {
+    display: inline;
+}
+
+/* Fix some select2 CSS issues */
+.select2-selection__clear {
+    margin-right: -15px !important;
+}
+
+.select2-container--bootstrap .select2-selection--multiple .select2-selection__choice
+{
+    margin: 8px 0 0 6px;
+}
+
+/* Fix select2 issue in actionset popover */
+.force_child_span_inline {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.force_child_span_inline > span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* fix select2 line height */
+.select2-container .select2-selection--single {
+    height: 34px !important;
+}
+
+/* Increase glyphicons size */
+.gi-2x{font-size: 2em;}
+.gi-3x{font-size: 3em;}
+.gi-4x{font-size: 4em;}
+.gi-5x{font-size: 5em;}
+
+/* huge text for dashboard */
+.huge {
+    font-size: 40px;
+}
+
+.popover {
+    z-index: 1010; /* Avoid to be above select2 search dropbox */
+}
+
+/*
+ * Hide only visually, but have it available for screenreaders
+ */
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}

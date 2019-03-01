@@ -1,0 +1,12 @@
+{% extends "core/pydici.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Chargeable expenses review" %}{% endblock %}
+
+{% block content %}
+
+<h1>{% trans "Non billed chargeable expenses" %}</h1>
+{% include "expense/expense_list.html" %}
+
+{% endblock %}

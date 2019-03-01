@@ -1,0 +1,26 @@
+{# JS Fragment to submit form with Ajax POST #}
+{# Form id must be {{ formid }} (use {% with... %}) #}
+{# Content placeholder id must {{ formcontent }} (use {% with... %}) #}
+ 
+<script type="text/javascript">
+/* attach a submit handler to the form */
+    $("#{{ formid }}").submit(function(event) {
+
+        /* stop form from submitting normally */
+        event.preventDefault(); 
+
+        /* get form data and target url */
+        var $form = $(this),
+        formData = $form.serialize(),
+        url = $form.attr('action');
+
+        /* Send the data using post and put the results inplace */
+        $.ajax({
+            url: url,
+            data: formData,
+            type: 'POST',
+            success: function(data) { $("#{{ formcontent }}").empty().append(data).css("opacity", "1"); },
+            beforeSend: function () { $("#{{ formcontent }}").css("opacity", "0.5"); },
+        });
+    });
+</script>

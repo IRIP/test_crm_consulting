@@ -1,0 +1,18 @@
+{% extends "core/pydici.html" %}
+
+{% load i18n %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %}{% trans "All companies list" %}{% endblock %}
+
+{% block content %}
+
+<div id="content-main">
+
+{% include "crm/_clientcompany_list.html" %}
+
+</div>
+{% endblock %}

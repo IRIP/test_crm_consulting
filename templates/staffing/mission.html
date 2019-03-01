@@ -1,0 +1,277 @@
+{% extends "core/pydici.html" %}
+
+{% load i18n %}
+{% load l10n %}
+{% load pydici_filters %}
+
+{% block extrajs %}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.jeditable.mini.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/admin/RelatedObjectLookups.js"></script>
+{% include "core/_c3.html" %}
+{% include "core/_pivotable_header.html" %}
+
+{% endblock %}
+
+{% block title %}{{ mission }}{% endblock %}
+
+{% block content %}
+
+{% with "mission-tabs" as tabs %}
+    {% include "core/_init_tabs.html" %}
+{% endwith %}
+
+<h1>
+{% if mission.lead.client %}
+    <a href="{% url 'crm:company_detail' mission.lead.client.organisation.company.id %}">{{ mission.lead.client.organisation }}</a>
+    {% with mission.lead.client as client %}{% include "crm/_client_picto.html" %}{% endwith %} :
+{% endif %}
+    <a href="{% url 'staffing:mission_update' mission.id %}?return_to={% url 'staffing:mission_home' mission.id %}" class='changelink' >{{ mission.short_name }}</a>
+</h1>
+
+<div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" id="mission-tabs" role="tablist">
+        <li role="presentation" class="active"><a data-toggle="tab" href="#tab-home"><span class="glyphicon glyphicon-home"></span> {% trans "Description" %}</a></li>
+        <li role="presentation"><a data-toggle="tab" href="#tab-consultants"><span class="glyphicon glyphicon-user"></span> {% trans "Consultants" %}</a></li>
+        <li role="presentation"><a data-toggle="tab" href="#tab-contacts" data-tab-url="{% url 'staffing:mission_contacts' mission.id %}"><span class="glyphicon glyphicon-envelope"></span> {% trans "Contacts" %}</a></li>
+        <li role="presentation"><a data-toggle="tab" href="#tab-other-missions" id="tabheader-other-missions"><span class="glyphicon glyphicon-list"></span> {% trans "Other missions" %}</a></li>
+        <li role="presentation"><a data-toggle="tab" href="#tab-timesheet" data-tab-url="{% url 'staffing:mission_timesheet' mission.id %}"><span class="glyphicon glyphicon-time"></span> {% trans "Timesheet" %}</a></li>
+        {% if mission.active %}
+            <li role="presentation"><a data-toggle="tab" href="#tab-staffing" data-tab-url="{% url 'staffing:manual_mission_staffing' mission.id %}"><span class="glyphicon glyphicon-eye-open"></span> {% trans "Forecast staffing" %}</a></li>
+        {% endif %}
+        {% if mission.lead %}
+            <li role="presentation"><a data-toggle="tab" href="#tab-expenses" data-tab-url="{% url 'expense:lead_expenses' mission.lead.id %}"><span class="glyphicon glyphicon-plane"></span> {% trans "Expenses" %}</a></li>
+            <li role="presentation"><a data-toggle="tab" href="#tab-documents" data-tab-url="{% url 'leads:lead_documents' mission.lead.id %}"><span class="glyphicon glyphicon-file"></span> {% trans "Documents" %}</a></li>
+            <li><a data-toggle="tab" href="#tab-reporting" data-tab-url="{% url 'leads:lead_pivotable' mission.lead.id %}"><span class="glyphicon glyphicon-stats"></span> {% trans "Reporting" %}</a></li>
+        {% endif %}
+        <li role="presentation"><a data-toggle="tab" href="#tab-actions"><span class="glyphicon glyphicon-tasks"></span> {% trans "Actions" %}{% if pending_actions %} ({{ pending_actions.count }}){% endif %}</a></li>
+        {% if mission.lead %}<li><a data-toggle="tab" href="#tab-billing"><span class="glyphicon glyphicon-euro"></span> {% trans "Billing" %}</a></li>{% endif %}
+    </ul>
+</div>
+
+<div class="tab-content">
+    <div id="tab-home" class="tab-pane active fade in">
+        
+            <br/>
+            {% if mission.active %}
+                   {% if mission.no_more_staffing_since %}
+                       <div id="mission_no_staffing_warning" class="alert alert-warning">
+                           {% trans "This mission has no staffing in future" %}.
+                           {% if mission.lead %}<strong>{% trans "Still to be billed" %}: {{ mission.lead.still_to_be_billed|floatformat:-2 }} €. </strong>{% endif %}
+                            <button onClick="$.get('{% url 'staffing:deactivate_mission' mission.id %}', process_mission_archive)"
+                               class="btn btn-default">{% trans "Archive this mission" %}</button>
+                       </div>
+                   {% else %}
+                       {% if mission.no_staffing_update_since %}
+                           <div class="alert alert-warning">{% trans "Staffing has not been updated recently" %}</div>
+                       {% endif %}
+                   {% endif %}
+             {% else %}
+                    <div class="alert alert-info">{% trans "This mission is archived" %}</div>
+             {% endif %}
+
+         {% if mission.lead %}
+            {% with mission.lead as lead %}{% include "leads/_lead_checkdoc.html" %}{% endwith %}
+            <div class="row">
+                <div class="col-md-12">
+                    {% include "staffing/_check_mission_billing_mode.html" %}
+                    {% include "staffing/_check_mission_rates.html" %}
+                </div>
+            </div>
+         {% endif %}
+
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-hover table-striped table-condensed">
+                    <tr>
+                        <th>{% trans "Type" %}</th><td>{{ mission.get_nature_display }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans "Subsidiary" %}</th><td>{{ mission.subsidiary }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans "Responsible" %}</th><td>{% if mission.responsible %}{% with consultant=mission.responsible %}{% include "people/__consultant_name.html" %}{% endwith %}{% endif %}</td>
+                    </tr>
+
+                    <tr>
+                        <th>{% trans "Mission id" %}</th><td>{{ mission.mission_id }}</td>
+                    </tr>
+                    {% if mission.lead %}
+                        {% if mission.lead.client_deal_id %}
+                            <tr>
+                                <th>{% trans "Client lead id" %}</th><td>{{ mission.lead.client_deal_id }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th>{% trans "Billing mode" %}</th><td><div  id="billing_mode-{{ mission.id|unlocalize }}" style="display:inline" class='jeditable-mission-update'>{{ mission.get_billing_mode_display|default:_("To be defined") }}</div></td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "Probability" %}</th><td><div  id="probability-{{ mission.id|unlocalize }}" style="display:inline" class='jeditable-mission-update'>{{ mission.probability }} %</div></td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "Lead of this mission" %}</th><td><a href="{% url 'leads:detail' mission.lead.id %}">{{ mission.lead }}</a></td>
+                        </tr>
+                 {% endif %}
+                </table>
+                </div>
+                <div class="col-md-6">
+                    {% if mission.lead.administrative_notes %}
+                        <h2>{% trans "Administrative notes" %}</h2>
+                        <div class='well'>{{ mission.lead.administrative_notes|pydici_simple_format }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            {% if mission.lead.description %}
+                    <div class='well'>{{ mission.lead.description|urlize|pydici_simple_format|linebreaksbr }}</div>
+            {% endif %}
+    </div>
+
+    <div id="tab-consultants" class="tab-pane fade">
+	    <h2>{% trans "Consultants currently implicated in this mission" %}</h2>
+	    <div class="col-lg-6 col-md-8 col-sm-12">
+	    <table class="table table-hover table-striped table-condensed">
+	    <tr>
+            <th>{% trans "Consultant" %}</th>
+            <th style="text-align:right;">{% trans "Daily rate (€)" %}</th>
+            <th style="text-align:right;">{% trans "Buy rate (€)" %}</th>
+            <th style="text-align:right;">{% trans "Objective rate (€)" %}</th>
+        </tr>
+	    {% for consultant, rate in mission.consultant_rates.items %}
+	        <tr>
+	            <td>{% include "people/__consultant_name.html" %}</td>
+	            <td align="right"><div id="sold-{{ mission.id|unlocalize }}-{{ consultant.id|unlocalize }}" class="jeditable-rate" >{{ rate.0 }}</div></td>
+	            <td align="right">{% if consultant.subcontractor %}<div id="bought-{{ mission.id|unlocalize }}-{{ consultant.id }}" style="display:inline" class="jeditable-rate">{{ rate.1 }}</div>{% endif %}</td>
+                <td align="right">{{ consultant.getRateObjective.rate }}</td>
+	        </tr>
+	    {% endfor %}
+	    </table>
+	    </div>
+    </div>
+
+    <div id="tab-contacts" class="tab-pane fade"></div>
+    
+    <div id="tab-other-missions" class="tab-pane fade">
+        {% if mission.sister_missions %}
+        <h2>{% trans "Other missions linked to this lead" %}</h2>
+        <div class="table-responsive">
+        <table class="table table-hover table-striped table-condensed">
+        <tr>
+	        <th>{% trans "Mission" %}</th>
+	        <th>{% trans "id" %}</th>
+	        <th>{% trans "Done days" %}</th>
+	        <th>{% trans "Done work (k€)" %}</th>
+	        <th>{% trans "Sold (k€)" %}</th>
+	        <th>{% trans "Billing mode" %}</th>
+        </tr>
+        {% for sister_mission in mission.sister_missions %}
+        <tr>
+	        <td><a href="{% url 'staffing:mission_home' sister_mission.id %}">{{ sister_mission }}</a></td>
+	        <td>{{ sister_mission.mission_id }}</td>
+	        <td>{{ sister_mission.done_work_k.0 }}</td>
+	        <td>{{ sister_mission.done_work_k.1|floatformat }}</td>
+	        <td>{{ sister_mission.price }}</td>
+	        <td>{{ sister_mission.get_billing_mode_display }}</td>
+        </tr>
+        {% endfor %}
+        </table>
+        </div>
+        {% else %}
+            <script type="text/javascript">
+            // Disable other mission tabs
+            $(document).ready(function() {
+                $('#tabheader-other-missions').hide();
+            });
+            </script>
+        {% endif %}
+    </div>
+
+    <div id="tab-timesheet" class="tab-pane fade"></div>
+    
+    <div id="tab-staffing" class="tab-pane fade"></div>
+    
+    <div id="tab-expenses" class="tab-pane fade"></div>
+    
+    <div id="tab-documents" class="tab-pane fade"></div>
+
+    <div id="tab-reporting" class="tab-pane fade"></div>
+    
+    <div id="tab-billing" class="tab-pane fade">
+    <br/>
+	    {% if mission.lead %}
+	        {% with mission.lead as lead %}
+	        {% include "billing/_lead_billing.html" %}
+            {% if pydici_feature.billing_request %}
+                <a class="btn btn-default" href="{% url 'billing:client_bill' %}?mission={{ mission.id|unlocalize}}" target="_blank">{% trans "Add a client bill for this mission" %}</a>
+            {% endif %}
+            {% if perms.billing.add_supplierbill %}
+                <a class="btn btn-default" href="{% url 'admin:billing_supplierbill_add' %}?lead={{ lead.id|unlocalize }}" target="_blank">{% trans "Add a supplier bill for this lead" %}</a>
+            {% endif %}
+	        {% endwith %}
+	    {% endif %}
+    </div>
+
+    <div id="tab-actions" class="tab-pane fade">
+    <br/>
+
+    <h2>{% trans "Pending actions" %}</h2>
+    {% with mission.pending_actions as actions %}
+        {% include "actionset/_lead_mission_actions.html" %}
+    {% endwith %}
+
+    <h2>{% trans "Done actions" %}</h2>
+    <ul>
+    {% for action in mission.done_actions %}
+        <li>{{ action.action.name }} - {{ action.get_state_display }} ({{ action.user.first_name }} {{ action.user.last_name }}, {{ action.update_date }})</li>
+    {% empty %}
+        {% trans "No action done" %}
+    {% endfor %}
+    </ul>
+    </div>
+
+
+</div> <!-- end of tabs -->
+
+<script type="text/javascript">
+<!--
+$(document).ready(function() {
+{% if mission.active %}
+    $(".jeditable-rate").editable("{% url 'staffing:mission_consultant_rate' %}", {
+        indicator : "<img src='{{ MEDIA_URL }}img/ajax-loader.gif'/>",
+        tooltip   : "{% trans 'click to edit...' %}",
+        event     : "click",
+        style     : "inherit",
+        data: function(value, settings) {
+            /* remove unbreakable space */
+            var retval = value.replace(/&nbsp;/gi, '');
+            return retval;
+          }
+    });
+
+    $(".jeditable-mission-update").editable("{% url 'staffing:mission_inline_update' %}", {
+        indicator : "<img src='{{ MEDIA_URL }}img/ajax-loader.gif'/>",
+        tooltip   : "{% trans 'click to edit...' %}",
+        event     : "click",
+        style  : "inherit",
+        type   : "select",
+        loadurl : "{% url 'staffing:mission_inline_update' %}",
+        submit : 'OK',
+        onblur : 'submit',
+    });
+{% endif %}
+
+});
+
+// Function that process mission archiving ajax callback
+function process_mission_archive(data) {
+    if (data.error==true) {
+        alert("{% trans 'Archiving failed' %}");
+    }
+    else {
+        $("#mission_no_staffing_warning").hide("fast");
+    }
+};
+
+-->
+</script>
+
+{% endblock %}

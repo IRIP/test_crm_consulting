@@ -1,0 +1,30 @@
+{% load i18n %}
+{% load cache %}
+{# context: consultant #}
+{# tab: tab anchor name #}
+<a href="{% url 'people:consultant_home' consultant.trigramme %}{{ tab }}">{{ consultant }}</a><span title="{{consultant.id}}"></span>
+{% cache 60 consultant consultant.id %}
+{% if consultant.is_in_holidays %}<span class="pydici-tooltip glyphicon glyphicon-sunglasses" title="{% trans 'on holidays !' %}"></span>{% endif %}
+{% if not consultant.subcontractor and consultant.active %}
+    {% with late_timesheet=consultant.timesheet_is_up_to_date %}
+        {% with previous_month_late=late_timesheet|first current_month_late=late_timesheet|last %}
+            {% if previous_month_late > 0 %}
+                {% with days=previous_month_late|floatformat:-1 %}
+                    <span title="{% blocktrans %} {{ days }} days missing in last month timesheet{% endblocktrans %}" style="color:red" class="pydici-tooltip glyphicon glyphicon-warning-sign"></span>
+                {% endwith %}
+            {% endif %}
+            {% if current_month_late > 0 %}
+                {% with days=current_month_late|floatformat:-1 %}
+                    <span title="{% blocktrans %} {{ days}} days missing in current month timesheet{% endblocktrans %}"
+                        {% if current_month_late > 8 %}
+                            style="color:red"
+                        {% elif current_month_late > 4 %}
+                            style="color:orange"
+                        {% endif %}
+                          class="pydici-tooltip glyphicon glyphicon-warning-sign"></span>
+                {% endwith %}
+            {% endif %}
+        {% endwith %}
+    {% endwith %}
+{% endif %}
+{% endcache %}

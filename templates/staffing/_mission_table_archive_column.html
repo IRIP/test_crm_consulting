@@ -1,0 +1,12 @@
+{# This template fragment can be used to render the archive column of a mission table #}
+{# Context/Argument: a row of a mission #}
+
+
+{% load i18n %}
+{% if row.active %}
+    <div id=mission_{{row.id}}></div> {# Marker to allow js to detect which row must be hidden #}
+    <a href="javascript:;"
+       onClick="$.get('{% url 'staffing:deactivate_mission' row.id %}', process_mission_archive)">
+        <em>{% trans "Archive" %}</em>
+    </a>
+{% endif %}

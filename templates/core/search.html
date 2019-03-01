@@ -1,0 +1,110 @@
+{% extends "core/pydici.html" %}
+{% load i18n %}
+{% load pydici_filters %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        {% if query %}
+            {% if consultants or companies or leads or missions or contacts or bills %}
+                <h1>{% blocktrans with query|escape as value %}Search results for <em>{{ value }}</em>:{% endblocktrans %}</h1>
+                {% if more_record %}<em>{% trans "Only first results are shown." %}</em>{% endif %}
+            {% else %}
+                <h1>{% blocktrans with query|escape as value %}No results for <em>{{ value }}</em>{% endblocktrans %}</h1>
+            {% endif %}
+        {% else %}
+            <h1>{% trans "Type at least one word to search for something !" %}</h1>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    {% if consultants %}
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <h2>{% trans "Consultants"%}</h2>
+            <ul>
+            {% for consultant in consultants %}
+                <li>{% include "people/__consultant_name.html" %}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if contacts %}
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <h2>{% trans "Contacts"%}</h2>
+            <ul>
+            {% for contact in contacts %}
+                <li><a href="{% url 'crm:contact_detail' contact.id %}">{{ contact }} ({{ contact.company }})</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if companies %}
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <h2>{% trans "Companies"%}</h2>
+            <ul>
+            {% for company in companies %}
+                <li><a href="{% url 'crm:company_detail' company.id %}">{{ company }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if tags %}
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <h2>{% trans "Tags"%}</h2>
+            <ul>
+            {% for tag in tags %}
+                <li class="col-xs-12 col-sm-12 col-md-6 col-lg-4"><a href="{% url 'leads:tag' tag.id %}">{{ tag }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+
+{% if bills %}
+    <h2>{% trans "Client Bills" %}</h2>
+    <ul>
+    {% for bill in bills %}
+        <li><a href="{% url 'billing:client_bill' bill.id %}?return_to={{ request.get_full_path }}">{{ bill }} - {{ bill.lead }} ({{ bill.get_state_display }})</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+
+<div class="row">
+    {% if leads %}
+        <h2 class="col-lg-12">{% trans "Leads" %}</h2>
+        <ul>
+        {% for lead in leads %}
+            <li class="col-xs-12 col-sm-12 col-md-6 col-lg-4"><a href="{% url 'leads:detail' lead.id %}">{{ lead }} ({{ lead.deal_id|default:_("no deal id") }})</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+<div class="row">
+    {% if missions %}
+        <h2 class="col-lg-12">{% trans "Missions" %}</h2>
+        <ul>
+        {% for mission in missions %}
+            <li class="col-xs-12 col-sm-12 col-md-6 col-lg-4"><a href="{% url 'staffing:mission_home' mission.id %}">{{ mission.full_name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+<div class="row">
+    {% if bills %}
+        <h2 class="col-lg-12">{% trans "Client Bills" %}</h2>
+        <ul>
+        {% for bill in bills %}
+            <li class="col-xs-12 col-sm-12 col-md-6 col-lg-4"><a href="{% url 'admin:billing_clientbill_change' bill.id %}?return_to={{ request.get_full_path }}">{{ bill }} - {{ bill.lead }} ({{ bill.get_state_display }})</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+{% endblock %}

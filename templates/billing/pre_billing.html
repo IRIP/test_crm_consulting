@@ -1,0 +1,142 @@
+{% extends "core/pydici.html" %}
+{% load i18n %}
+{% load l10n %}
+
+{% block title %}{% trans "Billing preparation" %}{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="btn-group col-lg-8" data-toggle="buttons">
+        <label class="btn btn-default col-lg-4 {% if mine %}active{% endif %}">
+            <input type="radio" onchange="window.location='{% url 'billing:pre_billing' year=month.year month=month.month mine=True %}'" />
+            {% trans "Only my leads" %}
+        </label>
+        <label class="btn btn-default col-lg-4 {% if not mine %}active{% endif %}">
+            <input type="radio" onchange="window.location='{% url 'billing:pre_billing' year=month.year month=month.month mine=False %}'" />
+            {% trans "All leads" %}
+        </label>
+    </div>
+</div>
+
+<br/>
+
+<div class="row">
+    <ul>
+        <li><h2><a href="#client-timespent">{% trans "Pre billing for time spent missions" %}</a></h2></li>
+        <li><h2><a href="#client-fixedprice">{% trans "Pre billing for fixed price missions" %}</a></h2></li>
+        <li><h2><a href="#internal">{% trans "Pre billing between subsidiaries" %}</a></h2></li>
+    </ul>
+</div>
+
+<div class="page-header">
+    <h1 id="client-timespent">{% trans "Pre billing for time spent missions" %} - {{ month|date:"F Y" }}</h1>
+</div>
+{% for lead, lead_data in time_spent_billing %}
+    <h2><a href="{% url 'leads:detail' lead.id %}">{{ lead }} ({{ lead.deal_id }})</a></h2>
+    {% for mission, mission_data in lead_data.1.items %}
+        <h5><a href="{% url 'staffing:mission_home' mission.id %}">{{ mission }} ({{ mission.mission_id }})</a></h5>
+            <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-8">
+            <table class="table table-condensed table-striped table-hover">
+            <tr><th>{% trans "consultant" %}</th><th>{% trans "days" %}</th><th>{% trans "rate" %}</th><th>{% trans "total" %}</th></tr>
+            {% for consultant, charge, rate, total in mission_data.1 %}
+                <tr><td>{% include "people/__consultant_name.html" %}</td>
+                    <td>{{ charge }} </td>
+                    <td>{{ rate|floatformat:"-2" }} €</td>
+                    <td>{{ total|floatformat:"-2" }} €</td>
+                </tr>
+            {% endfor %}
+            <tr><th>{% trans "total" %}</th><td></td><td></td><th>{{ mission_data.0|floatformat:"-2" }} €</th></tr>
+            </table>
+            </div>
+                <a class="btn btn-default" href="{% url 'billing:client_bill' %}?mission={{ mission.id|unlocalize }};month={{month.month}};year={{month.year|unlocalize}}" target="_blank">{% trans "Add a client bill for this mission" %}</a>
+            </div>
+    {% endfor %}
+     {% ifequal lead.mission_set.count 1 %}
+        <h4></h4>
+     {% else %}
+        <p><strong>{% trans "Total:" %} {{ lead_data.0|floatformat:"-2"}} €</strong></p>
+     {% endifequal %}
+     <p><strong>{% trans "Still to be billed" %}: {{ lead.still_to_be_billed }} €</strong></p>
+     <br/><br/><hr/>
+{% endfor %}
+
+<div class="page-header">
+    <h1 id="client-fixedprice">{% trans "Pre billing for fixed price missions" %} - {{ month|date:"F Y" }}</h1>
+</div>
+<div><ul>
+{% for mission in fixed_price_missions %}
+    {% ifchanged mission.lead %}
+        </ul></div><hr/>
+        <h2>{{ mission.lead }} ({{ mission.lead.deal_id }})</h2>
+        {% with mission.lead as lead %}{% include "billing/_lead_billing.html" %}{% endwith %}
+        <div class="timesheet">
+        <h3>{% trans "Fixed price mission(s)" %}</h3>
+        <ul>
+    {% endifchanged %}
+    <li><a href="{% url 'staffing:mission_home' mission.id %}">{{ mission }} ({{ mission.mission_id }}) : </a>
+        {% blocktrans with mission.done_work_k.1|floatformat as done %}{{ done }} k€ done {% endblocktrans %}({% trans "sold:" %} {{ mission.price }} k€)
+        <a class="btn btn-default" href="{% url 'billing:client_bill' %}?mission={{ mission.id|unlocalize }};proportion=0.3" target="_blank">{% trans "Bill 30% for this mission" %}</a>
+        <a class="btn btn-default" href="{% url 'billing:client_bill' %}?mission={{ mission.id|unlocalize }};proportion=0.7" target="_blank">{% trans "Bill 70% for this mission" %}</a>
+    </li>
+
+{% endfor %}
+
+</div>
+
+
+<div id="internal"></div>
+{% for subsidiaries, subsidiary_internal_billing in internal_billing.items %}
+    <div class="page-header">
+        <h1>{% blocktrans with from=subsidiaries.0 to=subsidiaries.1 %}Internal billing from {{ from }} to {{ to }}{% endblocktrans %} - {{ month|date:"F Y" }}</h1>
+    </div>
+    {% for lead, lead_data in subsidiary_internal_billing %}
+        <h2><a href="{% url 'leads:detail' lead.id %}">{{ lead }} ({{ lead.deal_id }})</a></h2>
+        {% for mission, mission_data in lead_data.1.items %}
+            <h5><a href="{% url 'staffing:mission_home' mission.id %}">{{ mission }} ({{ mission.mission_id }})</a></h5>
+                <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-8">
+                <table class="table table-condensed table-striped table-hover">
+                <tr><th>{% trans "consultant" %}</th><th>{% trans "days" %}</th><th>{% trans "rate" %}</th><th>{% trans "total" %}</th></tr>
+                {% for consultant, charge, rate, total in mission_data.1 %}
+                    <tr><td>{% include "people/__consultant_name.html" %}</td>
+                        <td>{{ charge }} </td>
+                        <td>{{ rate|floatformat:"-2" }} €</td>
+                        <td>{{ total|floatformat:"-2" }} €</td>
+                    </tr>
+                {% endfor %}
+                <tr><th>{% trans "total" %}</th><td></td><td></td><th>{{ mission_data.0|floatformat:"-2" }} €</th></tr>
+                </table>
+                </div>
+                </div>
+        {% endfor %}
+         {% ifequal lead.mission_set.count 1 %}
+            <h4></h4>
+         {% else %}
+            <h4>{% trans "Total:" %} {{ lead_data.0|floatformat:"-2"}} €</h4>
+         {% endifequal %}
+         <a class="btn btn-default" href="">{% trans "Add an internal bill" %}</a>
+         <br/><br/><hr/>
+    {% endfor %}
+{% endfor %}
+
+
+{% if undefined_billing_mode_missions %}
+<br/><hr>
+<h1 class="alert alert-danger">{% trans "Missions without defined billing mode" %} - {{ month|date:"F Y" }}</h1>
+<div><ul>
+{% for mission in undefined_billing_mode_missions %}
+    {% ifchanged mission.lead %}
+        </ul></div><hr/>
+        <h2>{{ mission.lead }} ({{ mission.lead.deal_id }})</h2>
+        <ul>
+    {% endifchanged %}
+    <li><a href="{% url 'staffing:mission_home' mission.id %}">{{ mission }} ({{ mission.mission_id }}) : </a>
+    {% blocktrans with mission.done_work_k.1|floatformat as done %}{{ done }} k€ done {% endblocktrans %}({% trans "sold:" %} {{ mission.price }} k€)
+{% endfor %}
+
+{% endif %}
+
+{% endblock %}

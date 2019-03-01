@@ -1,0 +1,103 @@
+{# JS Fragment that color timesheet when user change any value #}
+
+<script type="text/JavaScript">
+$(document).ready(function()
+{
+    function markModified($element) {
+        $element.addClass('modified');
+        $(".submit-row button").addClass('modified');
+        $('#readonly-warning').addClass('modified');
+    }
+
+    function coerceTime($input) {
+        $input.parent().removeClass('timesheet-error');
+        var val = $input.val().trim();
+        var HOURS_MINUTES_REGEX = /^(\d+)[h:](\d+)m?/i;
+        var HOURS_ONLY_REGEX = /^(\d+)h?$/i;
+        var MINUTES_ONLY_REGEX = /^(\d+)m$/i;
+
+        var hours = null;
+        var minutes;
+
+        var result = HOURS_MINUTES_REGEX.exec(val);
+        if (result) {
+            hours = result[1];
+            minutes = result[2];
+        } else if (result = HOURS_ONLY_REGEX.exec(val)) {
+            hours = result[1];
+            minutes = 0;
+        } else if (result = MINUTES_ONLY_REGEX.exec(val)) {
+            hours = 0;
+            minutes = result[1];
+        }
+
+        if (hours === null) {
+            $input.parent().addClass('timesheet-error');
+        } else {
+            hours = Number(hours);
+            minutes = Number(minutes);
+            hours += Math.floor(minutes / 60);
+            if (hours >= 24) {
+                $input.parent().addClass('timesheet-error');
+                return;
+            }
+            minutes = minutes % 60;
+
+            // Left pad with 0
+            var minutesStr = ('0' + String(minutes)).substr(-2);
+            $input.val(hours + ':' + minutesStr);
+        }
+    }
+
+
+    function cycleitem(target) {
+        if (["8", ''].indexOf(target.val()) > -1) { i="5"; }
+        else if (target.val() == "5") { i="2"; }
+        else if (target.val() == "2") { i="6"; }
+        else if (target.val() == "6") { i="0"; }
+        else if (target.val() == "0") { i="8"; }
+        target.val(i);
+        markModified(target);
+    }
+
+    function cycleitemReverse(target) {
+        if (["8", ''].indexOf(target.val()) > -1) { i="0"; }
+        else if (target.val() == "0") { i="6"; }
+        else if (target.val() == "6") { i="2"; }
+        else if (target.val() == "2") { i="5"; }
+        else if (target.val() == "5") { i="8"; }
+        target.val(i);
+        markModified(target);
+    }
+
+    $("input[class=timesheet-cycle]").on("click", function(ev) {
+        if(!ev.shiftKey) {
+            cycleitem($(this));
+        } else {
+            cycleitemReverse($(this));
+        }
+    });
+
+    $("input[class=timesheet-cycle]").on('touchstart', function(ev) {
+        event.stopPropagation();
+        event.preventDefault();
+        if(event.handled !== true) {
+            cycleitem($(this));
+            event.handled = true;
+        } else {
+            return false;
+        }
+    });
+
+    $("input[class=timesheet-keyboard]").change(function() {
+        coerceTime($(this));
+        markModified($(this));
+    });
+    $("input[class=timesheet-keyboard]").on("click", function() {
+        $(this).select();
+    });
+    $("input[name^='lunch_ticket_']").on("click", function() {
+        markModified($(this));
+	});
+})
+</script>

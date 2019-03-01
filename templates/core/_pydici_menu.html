@@ -1,0 +1,160 @@
+{% load i18n %}
+{% load cache %}
+{% load pydici_filters %}
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'core:index' %}">Pydici
+          <img class="hidden-xs hidden-sm" alt="" src="{{ MEDIA_URL }}pydici/company_logo.png" height=20/></a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+        {% if user.is_staff and pydici_feature.menubar %}
+        {% cache 3600 menu request.user.id %}
+        {% if pydici_feature.leads %}
+        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Leads" %}<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'leads:review' %}">{% trans "Current leads review" %}</a></li>
+                {% if pydici_feature.leads_list_all %}
+                <li><a href="{% url 'leads:leads' %}">{% trans "All leads" %}</a></li>
+                {% endif %}
+                <li><a href="{% url 'leads:lead' %}">{% trans 'New lead' %}</a></li>
+            </ul>
+        </li>
+        {% endif %}
+
+        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Missions" %}<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                {% if pydici_feature.staffing_mass %}
+                    <li><a href="{% url 'staffing:pdcreview-index' %}">{% trans "Workload schedule" %}</a></li>
+                {% endif %}
+                <li><a href="{% url 'staffing:missions' %}">{% trans "Active missions" %}</a></li>
+                {% with user.username|link_to_timesheet as link %}
+                    {% if link %}<li>{{ link }}</li>{% endif %}
+                {% endwith %}
+                {% if pydici_feature.staffing %}
+                    {% with user.username|link_to_staffing as link %}
+                        {% if link %}<li>{{ link }}</li>{% endif %}
+                    {% endwith %}
+                {% endif %}
+                {% if pydici_feature.staffing_mass %}
+                    <li><a href="{% url 'staffing:mass_staffing' %}">{% trans "Mass staffing" %}</a></li>
+                {% endif %}
+            </ul>
+        </li>
+
+        {% if pydici_feature.3rdparties %}
+        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Third parties" %}<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'crm:company_list' %}">{% trans "All clients" %}</a></li>
+                <li><a href="{% url 'crm:contact_list' %}">{% trans "Contact address directory" %}</a></li>
+                <li><a href="{% url 'crm:client' %}">{% trans "New client" %}</a></li>
+                {% if pydici_feature.contacts_write %}
+                <li><a href="{% url 'crm:mission_contact_create' %}?return_to={{ request.get_full_path }}">{% trans "New mission contact" %}</a></li>
+                <li><a href="{% url 'crm:businessbroker_create' %}?return_to={{ request.get_full_path }}">{% trans "New business broker" %}</a></li>
+                <li><a href="{% url 'crm:administrative_contact_add' %}?return_to={{ request.get_full_path }}">{% trans "New administrative contact" %}</a></li>
+                <li><a href="{% url 'crm:supplier_create' %}?return_to={{ request.get_full_path }}">{% trans "New supplier" %}</a></li>
+                {% endif %}
+            </ul>
+        </li>
+        {% endif %}
+
+        {% if pydici_feature.management %}
+        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Management" %}<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'staffing:holidays_planning' %}">{% trans "Holidays planning" %}</a></li>
+                <li><a href="{% url 'actionset:actionset_catalog' %}">{% trans "Actionset catalog" %}</a></li>
+                {% if perms.actionset.change_actionstate %}
+                    <li><a href="{% url 'admin:actionset_actionstate_changelist' %}">{% trans "On going actions" %}</a></li>
+                {% endif %}
+                <li class="divider"></li>
+                <li class="dropdown-header">{% trans "Expenses" %}</li>
+                <li><a href="{% url 'expense:expenses' %}">{% trans "Expenses" %}</a></li>
+                <li><a href="{% url 'expense:expense_payments' %}">{% trans "Expenses payment" %}</a></li>
+                <li class="divider"></li>
+                {% if pydici_feature.billing_request %}
+                    <li class="dropdown-header">{% trans "Billing" %}</li>
+                    <li><a href="{% url 'billing:pre_billing' %}">{% trans "Pre billing" %}</a></li>
+                    <li><a href="{% url 'billing:client_bills_archive' %}">{% trans "All client bills" %}</a></li>
+                    <li><a href="{% url 'billing:client_bill' %}?return_to={{ request.get_full_path }}">{% trans "New client bill" %}</a></li>
+                    <li><a href="{% url 'billing:client_bills_in_creation' %}">{% trans "Client bills in creation" %}</a></li>
+                    {% if pydici_feature.billing_management %}
+                        <li><a href="{% url 'billing:supplier_bills_archive' %}">{% trans "All supplier bills" %}</a></li>
+                        <li><a href="{% url 'billing:supplier_bill' %}">{% trans "New supplier bill" %}</a></li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </li>
+        {% endif %}
+
+        {% if pydici_feature.reports %}
+        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Reports" %}<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">{% trans "Operationnal reporting" %}</li>
+                <li><a href="{% url 'core:dashboard' %}">{% trans "Management dashboard" %}</a></li>
+                <li><a href="{% url 'staffing:all_timesheet' %}">{% trans "All people timesheet" %}</a></li>
+                <li><a href="{% url 'staffing:prod_report' %}">{% trans "Staff production" %}</a></li>
+                <li><a href="{% url 'staffing:fixed_price_missions_report' %}">{% trans "Fixed price missions" %}</a></li>
+                <li><a href="{% url 'staffing:holidays-pivotable' %}">{% trans "Holiday pivot table" %}</a></li>
+                <li><a href="{% url 'staffing:nonprod-pivotable' %}">{% trans "Non productive missions pivot table" %}</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">{% trans "Leads" %}</li>
+                <li><a href="{% url 'leads:leads-pivotable' %}">{% trans "Leads pivot table" %}</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">{% trans "Expenses" %}</li>
+                <li><a href="{% url 'expense:chargeable_expenses' %}">{% trans "Chargeable expenses review" %}</a></li>
+                <li><a href="{% url 'expense:expenses_history' %}">{% trans "Expenses history" %}</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">{% trans "Billing" %}</li>
+                <li><a href="{% url 'billing:bill_review' %}">{% trans "Bills review" %}</a></li>
+                <li><a href="{% url 'billing:bill_payment_delay' %}">{% trans "Payment delay review" %}</a></li>
+                <li><a href="{% url 'core:risk_reporting' %}">{% trans "Risks synthesis" %}</a></li>
+                <li><a href="{% url 'leads:leads_to_bill' %}">{% trans "Leads still to be billed" %}</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">{% trans "Extractions" %}</li>
+                <li><a href="{% url 'leads:csv_export' target='active' %}">{% trans "Active leads (csv)" %}</a></li>
+                <li><a href="{% url 'leads:csv_export' target='all' %}">{% trans "All leads (csv)" %}</a></li>
+                <li><a href="{% url 'leads:summary_mail_html' %}">{% trans "Week summary mail (html)" %}</a></li>
+                <li><a href="{% url 'leads:summary_mail_text' %}">{% trans "Week summary mail (text)" %}</a></li>
+                <li><a href="{% url 'core:financial_control' %}">{% trans "Financial control" %}</a></li>
+            </ul>
+        </li>
+        {% endif %}
+        {% endcache %}
+        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Help" %}<span class="caret"></span></a>
+            <ul class="dropdown-menu keep-open" role="menu">
+                <li><a href="{% url 'admin:index' %}">{% trans "Admin console" %}</a></li>
+                <li><a href="{% url 'help' %}">{% trans "Help page" %}</a></li>
+                <li>{{ foo|get_admin_mail }}</li>
+                {% if pydici_feature.search %}
+                    <li><form class="navbar-form keep-open hidden-xs hidden-md hidden-lg" role="search" action="{% url 'core:search' %}" method="GET">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="{% trans 'search' %}" name="q">
+                        </div>
+                        </form>
+                    </li>
+                {% endif %}
+            </ul>
+        </li>
+        </ul>
+
+        {% if pydici_feature.search %}
+        <form class="navbar-form pull-right hidden-sm" role="search" action="{% url 'core:search' %}" method="GET">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="{% trans 'search' %}" name="q"  value="{{ query|escape }}" >
+            </div>
+        </form>
+        {% endif %}
+        {% endif %} {# /user.is_staff and pydici_feature.menubar #}
+
+        </div><!--/.navbar-collapse -->
+
+        </div><!-- containter-->
+      </div>

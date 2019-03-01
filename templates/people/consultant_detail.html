@@ -1,0 +1,290 @@
+{% load i18n %}
+
+{% if not consultant.active %}
+<h3>{% trans "This consultant does not work anymore for the company" %}</h3>
+{% endif %}
+
+<div class="row">
+
+    <div class="col-lg-8 col-md-12 col-sm-6 col-xs-12">
+        <div class="pydici-block">
+        <h3 class="pydici-block-title">{% trans "This month" %}</h3>
+            <ul class="icon-list arrow-right">
+                <li>{% trans "My turnover this month: " %} <b>{{ month_turnover|floatformat:-2 }} €</b>
+                ({% if turnover_variation > 0 %}<img src="{{ MEDIA_URL }}pydici/increase.png" border=0 title="{% trans 'Increase' %}" />
+                 {% else %}<img src="{{ MEDIA_URL }}pydici/decrease.png" border=0 title="{% trans 'Decrease' %}" />{% endif %}
+                {{ turnover_variation|floatformat:-2 }}%)</li>
+            </ul>
+            <div class="col-md-2 col-sm-6 col-xs-6">
+                <center><h4>{% trans "prod rate (&#37;)" %}</h4></center>
+                <div id="consultant_prod_rate"></div>
+            </div>
+            <div class="col-md-2 col-sm-6 col-xs-6">
+                <center><h4>{% trans "daily rate (€)" %}</h4></center>
+                <div id="consultant_daily_rate"></div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div id="consultant_timesheet_status"></div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div id="consultant_forecast_status"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="pydici-block">
+            {% if consultant.manager %}
+                {% ifnotequal consultant.manager consultant %}
+                    <h3 class="pydici-block-title">{% trans "Manager: " %} {% with consultant=consultant.manager %}{% include "people/__consultant_name.html" %}{% endwith %}</h3>
+                {% endifnotequal %}
+            {% endif %}
+            {% if staff %}
+                <h3 class="pydici-block-title">{% trans "Staff" %}</h3>
+                <ul class="row icon-list chevron-right">
+                {% for people in staff %}
+                    <li class="col-sm-6">{% with consultant=people %}{% include "people/__consultant_name.html" %}{% endwith %}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if staled_missions %}
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="pydici-block">
+                <h3 class="pydici-block-title">{% trans "Staled missions (to be updated or archived)" %}</h3>
+                <ul class="row icon-list chevron-right">
+                {% for mission in staled_missions %}
+                    <li><a href="{% url 'staffing:mission_home' mission.id %}">{{ mission }}</a></li>
+                {% endfor %}
+                </ul>
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% with consultant.pending_actions|slice:":20" as actions %}
+        {% if actions %}
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="pydici-block">
+                    <h3 class="pydici-block-title">{% trans "Pending actions" %}</h3>
+                        {% include "actionset/_consultant_actions.html" %}
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+{% if business_territory %}
+
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="pydici-block">
+            <h3 class="pydici-block-title">{% trans "Business territory" %}</h3>
+            <ul class="row icon-list chevron-right">
+            {% for company in business_territory %}
+                {% if forloop.counter > 12 %}
+                    <div class="collapse collapse-business-territory">
+                {% endif %}
+                <li class="col-sm-6"><a href="{% url 'crm:company_detail' company.id %}">{{ company }}</a></li>
+                {% if forloop.counter > 12 %}
+                    </div>
+                {% endif %}
+                {% if forloop.last and forloop.counter > 12 %}
+                    <div class="pydici-more-less" data-toggle="collapse" aria-expanded="false" data-target=".collapse-business-territory" aria-controls="collapse-business-territory">
+                        <span class="glyphicon glyphicon-collapse-down"></span>
+                        <span class="glyphicon glyphicon-collapse-up"></span>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% endif %}
+
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="pydici-block">
+            <h3 class="pydici-block-title">{% trans "Clients" %}</h3>
+            <ul class="row icon-list chevron-right">
+            {% for company in companies %}
+                {% if forloop.counter > 12 %}
+                    <div class="collapse collapse-clients">
+                {% endif %}
+                <li class="col-sm-6"><a href="{% url 'crm:company_detail' company.id %}">{{ company }}</a></li>
+                {% if forloop.counter > 12 %}
+                    </div>
+                {% endif %}
+                {% if forloop.last and forloop.counter > 12 %}
+                    <div class="pydici-more-less" data-toggle="collapse" aria-expanded="false" data-target=".collapse-clients" aria-controls="collapse-clients">
+                        <span class="glyphicon glyphicon-collapse-down"></span>
+                        <span class="glyphicon glyphicon-collapse-up"></span>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </div>
+	</div>
+
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="pydici-block">
+            <h3 class="pydici-block-title">{% trans "Current missions" %}</h3>
+            <ul class="row icon-list chevron-right">
+            {% for mission in missions %}
+                <li><a href="{% url 'staffing:mission_home' mission.id %}">{{ mission }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+	</div>
+
+    {% if leads_as_responsible %}
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="pydici-block">
+                    <h3 class="pydici-block-title">{% trans "Current leads as responsible" %}</h3>
+                    <ul class="row icon-list chevron-right">
+                    {% for lead in leads_as_responsible %}
+                        <li><a href="{% url 'leads:detail' lead.id %}", title='{{ lead.description }}'>{{ lead }}</a></li>
+                    {% endfor %}
+                    </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if leads_as_staffee %}
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="pydici-block">
+                    <h3 class="pydici-block-title">{% trans "Current leads as resource" %}</h3>
+                    <ul class="icon-list chevron-right">
+                    {% for lead in leads_as_staffee %}
+                        <li><a href="{% url 'leads:detail' lead.id %}", title='{{ lead.description }}'>{{ lead }}</a></li>
+                    {% endfor %}
+                    </ul>
+            </div>
+        </div>
+    {% endif %}
+
+</div> <!-- end of row -->
+
+<div class="row">
+    <div id="consultant_rate_graph_content" class="col-lg-12"></div>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#consultant_rate_graph_content').load("{% url 'staffing:graph_consultant_rates' consultant.id %}")
+     });
+    </script>
+</div>
+
+<script type="text/javascript">
+//$(document).ready(function() {
+    function displayConsultantGraph () {
+        var chart_timesheet = c3.generate({
+            bindto: '#consultant_timesheet_status',
+            data: {
+                columns: [
+                    ["{% trans 'done' context 'days' %}", {{ done_days|safe }}],
+                    ["{% trans 'late' context 'days' %}", {{ late|safe }}],
+                    ["{% trans 'to be done' context 'days' %}", {{ to_be_done|safe }}],
+                ],
+                type : 'donut',
+            },
+            tooltip: {
+                format: {
+                    value: function (value, ratio, id, index) { return value; }
+                    }
+                },
+            donut: {
+                title: "{% trans 'Timesheet' context 'short' %}",
+                label: {
+                    format: function (value) { return value; },
+                    threshold: 0.001,
+                    },
+                },
+        });
+
+
+        var chart_forecast = c3.generate({
+            bindto: '#consultant_forecast_status',
+            data: {
+                columns: [
+                    ["{% trans 'forecasted' %}", {{ forecasted|safe }}],
+                    ["{% trans 'overhead' %}", {{ overhead|safe }}],
+                    ["{% trans 'missing' %}", {{ missing|safe }}],
+                ],
+                type : 'donut',
+            },
+            tooltip: {
+                format: {
+                    value: function (value, ratio, id, index) { return value; }
+                    }
+                },
+            donut: {
+                title: "{% trans "Forecast" %}",
+                label: {
+                    format: function (value) { return value; },
+                    threshold: 0.001,
+                    },
+                },
+        });
+
+         var chart_prod_date = c3.generate({
+            bindto: '#consultant_prod_rate',
+            data: {
+                columns: [
+                    ["{% trans 'prod. rate' %}", {{ prod_rate|safe }}],
+                    ["{% trans 'below obj.' %}", {{ prod_missing|safe }}],
+                    ["{% trans 'beyond obj.' %}", {{ prod_overhead|safe }}],
+                ],
+                type : 'bar',
+                order: "null",
+                groups : [["{% trans 'prod. rate' %}", "{% trans 'below obj.' %}", "{% trans 'beyond obj.' %}"]],
+            },
+            axis: {
+                y: {
+                    max: 100,
+                    padding : {
+                        top: 0,
+                        bottom: 0,
+                    }
+                   },
+                x : {
+                    show: false,
+                }
+            },
+            tooltip: {
+                format: {
+                    value: function (value, ratio, id, index) { return value; },
+                    title: function (x) { return "{% trans 'prod rate (%)' %}"; }
+                    }
+                },
+        });
+
+        var chart_prod_date = c3.generate({
+            bindto: '#consultant_daily_rate',
+            data: {
+                columns: [
+                    ["{% trans 'daily rate' %}", {{ daily_rate|safe }}],
+                    ["{% trans 'below obj.' %}", {{ daily_missing|safe }}],
+                    ["{% trans 'beyond obj.' %}", {{ daily_overhead|safe }}],
+                ],
+                type : 'bar',
+                order: "null",
+                groups : [["{% trans 'daily rate' %}", "{% trans 'below obj.' %}", "{% trans 'beyond obj.' %}"]],
+            },
+            axis: {
+                x : {
+                    show: false,
+                },
+            },
+            tooltip: {
+                format: {
+                    value: function (value, ratio, id, index) { return value; },
+                    title: function (x) { return "{% trans 'daily rate (€)' %}"; }
+                    }
+                },
+        });
+    }
+    // Don't display right now graph, it can badly compute div size in some corner cases
+    // Sad solution. I pay a beer for the one who solve it properly
+    setTimeout(displayConsultantGraph, 50);
+
+//});
+</script>

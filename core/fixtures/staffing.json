@@ -1,0 +1,289 @@
+[
+    {
+        "pk": 1, 
+        "model": "staffing.mission", 
+        "fields": {
+            "update_date": "2010-02-21 22:53:37", 
+            "description": null, 
+            "probability": 50, 
+            "nature": "PROD", 
+            "lead": 1,
+            "price" : 10, 
+            "deal_id": "1234",
+            "active": true,
+            "subsidiary": 1
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "staffing.mission", 
+        "fields": {
+            "update_date": "2010-02-21 22:54:18", 
+            "description": null, 
+            "probability": 50, 
+            "nature": "PROD", 
+            "lead": 2, 
+            "deal_id": "4321",
+            "active": true,
+            "subsidiary": 1
+        }
+    },
+    {
+        "pk": 3, 
+        "model": "staffing.mission", 
+        "fields": {
+            "update_date": "2010-02-21 22:54:18", 
+            "description": "ploum", 
+            "probability": 50, 
+            "nature": "PROD", 
+            "lead": 2, 
+            "deal_id": "4322",
+            "active": true,
+            "subsidiary": 1
+        }
+    },   
+    {
+        "pk": 1, 
+        "model": "staffing.staffing", 
+        "fields": {
+            "comment": "", 
+            "update_date": "2010-02-21 23:01:12", 
+            "consultant": 1, 
+            "mission": 1, 
+            "charge": 10.0, 
+            "last_user": "fox", 
+            "staffing_date": "2010-02-01"
+        }
+    },
+    
+     {
+        "pk": 10, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 0.5, 
+            "working_date": "2010-07-08", 
+            "mission": 3
+        }
+    }, 
+    {
+        "pk": 86, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 0.5, 
+            "working_date": "2010-07-08", 
+            "mission": 2
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-07-09", 
+            "mission": 3
+        }
+    }, 
+    {
+        "pk": 87, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-07-12", 
+            "mission": 2
+        }
+    }, 
+    {
+        "pk": 102, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-07-12", 
+            "mission": 3
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-07-13", 
+            "mission": 3
+        }
+    }, 
+    {
+        "pk": 89, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-07-14", 
+            "mission": 3
+        }
+    }, 
+    {
+        "pk": 88, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-07-15", 
+            "mission": 1
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-07-16", 
+            "mission": 2
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-07-19", 
+            "mission": 2
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-07-20", 
+            "mission": 2
+        }
+    }, 
+    {
+        "pk": 91, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-07-20", 
+            "mission": 3
+        }
+    }, 
+    {
+        "pk": 103, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-07-20", 
+            "mission": 1
+        }
+    }, 
+    {
+        "pk": 98, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 0.25, 
+            "working_date": "2010-08-10", 
+            "mission": 1
+        }
+    }, 
+    {
+        "pk": 101, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 0.33000000000000002, 
+            "working_date": "2010-08-11", 
+            "mission": 2
+        }
+    }, 
+    {
+        "pk": 99, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-08-12", 
+            "mission": 3
+        }
+    }, 
+    {
+        "pk": 100, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 0.65000000000000002, 
+            "working_date": "2010-08-13", 
+            "mission": 2
+        }
+    }, 
+    {
+        "pk": 125, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-08-16", 
+            "mission": 2
+        }
+    }, 
+    {
+        "pk": 105, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-09-01", 
+            "mission": 2
+        }
+    }, 
+    {
+        "pk": 119, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-09-03", 
+            "mission": 2
+        }
+    }, 
+    {
+        "pk": 120, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-09-06", 
+            "mission": 2
+        }
+    }, 
+    {
+        "pk": 121, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-09-07", 
+            "mission": 2
+        }
+    }, 
+    {
+        "pk": 128, 
+        "model": "staffing.timesheet", 
+        "fields": {
+            "consultant": 1, 
+            "charge": 1.0, 
+            "working_date": "2010-09-09", 
+            "mission": 2
+        }
+    }
+]

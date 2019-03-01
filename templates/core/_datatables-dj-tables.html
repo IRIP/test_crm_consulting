@@ -1,0 +1,33 @@
+{# Standard pydici datatables definition #}
+{# context: table_id #}
+{# context: datatable_options #}
+
+{% load i18n %}
+
+
+<script type="text/JavaScript">
+<!--
+
+$(document).ready(function() {
+        $('#{{ table_id }} *').removeClass('odd').removeClass('even'); // Remove tables2 odd/even class - we use datables ones that support sorting 
+        $('#{{ table_id }} *').removeClass('lead'); // Remove tables2 lead class that trigger bootstrap lead css class
+
+
+        $('#{{ table_id }}').dataTable({
+            {{ datatable_options }}
+            "bPaginate": false,
+            "bInfo": false,
+            "bStateSave": false,
+            "oLanguage": {
+                "sZeroRecords": "{% trans 'Nothing found' %}",
+                "sInfo": "{% trans 'Showing _START_ to _END_ of _TOTAL_ records' %}",
+                "sInfoEmpty": "{% trans 'Showing 0 to 0 of 0 records' %}",
+                "sInfoFiltered": "{% trans '(filtered from _MAX_ total records)' %}",
+                "sSearch": "{% trans 'Search:' %}",
+            }
+        });
+    } );
+-->
+</script>
+
+

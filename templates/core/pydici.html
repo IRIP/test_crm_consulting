@@ -1,0 +1,117 @@
+{% load i18n %}
+{% load pydici_filters %}
+{% load staticfiles %}
+<!DOCTYPE html><html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="pydici">
+    <meta name="author" content="Sebastien Renard">
+    <link rel="icon" href="favicon.ico">
+
+    <title>{% block title %}Pydici{% endblock %}</title>
+
+    <link href="{{ MEDIA_URL }}bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ MEDIA_URL }}css/datepicker.css" rel="stylesheet">
+    <link href="{{ MEDIA_URL }}css/iconic.css" rel="stylesheet">
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css" rel="stylesheet">
+    <link href="{{ MEDIA_URL }}tables2/css/screen.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" type="text/css" media="screen" rel="stylesheet">
+    <link href="{{ MEDIA_URL }}css/select2-bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/bs/jszip-2.5.0,dt-1.10.11,b-1.1.2,b-html5-1.1.2,b-print-1.1.2,fh-3.1.1,r-2.0.2/datatables.min.css"/>
+
+    {% block extracss %}{% endblock %}
+    
+    <link href="{{ MEDIA_URL }}css/pydici.css" rel="stylesheet">
+
+
+    {% block pydici_rss %}
+    <link rel="alternate" type="application/atom+xml" title="{% trans 'ATOM feed of last modified leads' %}"
+              href="{% url 'latest' %}" />
+    <link rel="alternate" type="application/atom+xml" title="{% trans 'ATOM feed of last created leads' %}"
+              href="{% url 'new' %}" />
+    <link rel="alternate" type="application/atom+xml" title="{% trans 'ATOM feed of last won leads' %}"
+              href="{% url 'won' %}" />
+    <link rel="alternate" type="application/atom+xml" title="{% trans 'ATOM feed of my leads' %}"
+              href="{% url 'mine' %}" />
+    <link rel="alternate" type="application/atom+xml" title="{% trans 'ATOM feed of latest staffing forecast' %}"
+              href="{% url 'latestStaffing' %}" />
+    <link rel="alternate" type="application/atom+xml" title="{% trans 'ATOM feed of my latest staffing forecast' %}"
+              href="{% url 'myLatestStaffing' %}" />
+    <link rel="alternate" type="application/atom+xml" title="{% trans 'ATOM feed of last archived Mission' %}"
+              href="{% url 'archivedMission' %}" />
+    {% endblock %}
+    
+  </head>
+
+  <body {% block bodyattr %}{% endblock %}>
+
+    {% block pydici-menu %}
+        {% include "core/_pydici_menu.html" %}
+    {% endblock %}
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/bootstrap-datepicker.js"></script>
+    {% ifequal LANGUAGE_CODE "fr-fr" %}
+        <!--<script type="text/javascript" src="{{ MEDIA_URL }}js/select2_locale_fr.js"></script>-->
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/bootstrap-datepicker.fr.js"></script>
+    {% endifequal %}
+
+    <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jszip-2.5.0,dt-1.10.11,b-1.1.2,b-html5-1.1.2,b-print-1.1.2,fh-3.1.1,r-2.0.2/datatables.min.js"></script>
+
+    
+    {% block extrajs %}{% endblock %}
+    
+    
+    {% block supercontent %}
+        <div class="container-fluid">
+            {% block messages %}
+                {% include "core/_messages.html" %}
+            {% endblock %}
+            {% block content %}{% endblock %}
+        </div> <!-- /container -->
+    {% endblock %}
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
+    <script type="text/javascript" src="/static/django_select2/django_select2.js"></script>
+    <script type="text/javascript">
+    <!--
+    $(document).ready(function() {
+        // Enable tooltip for all objects with pydici-tooltip class
+        $(".pydici-tooltip").tooltip();
+
+        // Prevent menu closing when using in-menu search form
+        $(document).on('click', '.dropdown-menu', function (e) {
+            $(this).hasClass('keep-open') && e.stopPropagation();
+        });
+
+    });
+    -->
+    </script>
+
+    {% if form %}
+        {% include "core/_select2.html" %}
+    {% endif %}
+
+
+
+   {% if debug %} 
+        <script type="text/javascript">
+        // Fix userswitch css to show it
+        <!--
+        $(document).ready(function() {
+
+            $(".userswitch").css("top", "60px");
+        });
+        -->
+        </script>
+    {% endif %}
+
+</body></html>

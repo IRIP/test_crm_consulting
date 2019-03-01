@@ -1,0 +1,19 @@
+{% extends "core/pydici.html" %}
+{% load i18n %}
+{% load admin_static %}
+
+
+{% block stylesheet %}{% static "admin/css/login.css" %}{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+
+<div id="content-main">
+{% include "core/_access_forbiden.html" %}
+</div>
+{% endblock %}

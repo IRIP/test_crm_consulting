@@ -1,0 +1,194 @@
+{% load i18n %}
+{# Fragment of page to be included in a mission_home tab #}
+
+    <br/>
+    {% include "staffing/_check_mission_billing_mode.html" %}
+    {% include "staffing/_check_mission_rates.html" %}
+    <div style="clear:both;"></div>
+
+    <div class="table-responsive">
+    <table class="table table-hover table-striped table-pydici-extra-condensed pydici-mission-timesheet">
+    <tr>
+        <th></th>
+        <th style="text-align:center" colspan={{ timesheet_months|length|add:2 }}>{% trans "Done days" %}</th>
+        <th class="table-separator"></th>
+        <th style="text-align:center" colspan={{ staffing_months|length|add:2 }}>{% trans "Days to be done" %}</th>
+        <th class="table-separator"></th>
+        <th style="text-align:center" colspan=3>{% trans "Total estimated" %}</th>
+    </tr>
+    <tr align="right">
+        <td></td>
+        {% for month in timesheet_months %}
+            <td>{{ month|date:"M y" }}</td>
+        {% endfor %}
+        <td>{% trans "Days" %}</td>
+        <td>{% trans "k€" %}</td>
+        <td class="table-separator"></td>
+        {% for month in staffing_months %}
+            <td>{{ month|date:"M y" }}</td>
+        {% endfor %}
+        <td>{% trans "Days" %}</td>
+        <td>{% trans "k€" %}</td>
+        <td class="table-separator"></td>
+        <td>{% trans "Days" %}</td>
+        <td>{% trans "k€" %}</td>
+    </tr>
+    {% for consultant, timesheet, staffing, estimated, timesheetAmount, staffingAmount ,timesheetRate, staffingRate in mission_data %}
+        {% ifequal consultant None %}
+            <tr align="right" style="font-weight:bold">
+            <td>{% trans "Total" %}</td>
+            <td>{{ timesheet|join:"</td><td>" }}</td>
+            <td class="table-separator"></td>
+            <td>{{ staffing|join:"</td><td>" }}</td>
+            <td class="table-separator"></td>
+            <td>{{ estimated|join:"</td><td>" }}</td>
+            <td></td>
+            </tr><tr align="right" style="font-weight:bold">
+            <td>{% trans "Total (k€)" %}</td>
+            <td>{{ timesheetAmount|join:"</td><td>" }}</td>
+            <td></td>
+            <td></td><td class="table-separator"></td>
+            <td>{{ staffingAmount|join:"</td><td>" }}</td>
+            <td></td>
+            <td></td><td class="table-separator"></td>
+	        <td></td>
+	        <td></td>
+            </tr><tr align="right">
+            <td>{% trans "Average daily rate (€)" %}</td>
+            <td>{{ timesheetRate|join:"</td><td>" }}</td>
+            <td></td><td class="table-separator"></td>
+            <td>{{ staffingRate|join:"</td><td>" }}</td>
+            <td></td><td class="table-separator"></td>
+	        <td></td>
+	        <td></td>
+        {% else %}
+            <tr align="right">
+            <td>{{ consultant }}</td>
+            <td>{{ timesheet|join:"</td><td>" }}</td>
+            <td class="table-separator"></td>
+            <td>{{ staffing|join:"</td><td>" }}</td>
+            <td class="table-separator"></td>
+            <td>{{ estimated|join:"</td><td>" }}</td>
+        {% endifequal %}
+        </tr>
+    {% endfor %}
+
+    </table>
+    <br/>
+    <a class="btn btn-default" href="{% url 'staffing:mission_timesheet' mission_id=mission.id %}?csv">{% trans "Export this timesheet in a spreadsheet" %}</a>
+    <a class="btn btn-default" href="{% url 'staffing:mission_timesheet' mission_id=mission.id %}?pdf">{% trans "Export this timesheet in PDF" %}</a>
+    </div>
+    <br/>
+    {% if mission.nature == "PROD" and pydici_feature.leads_profitability %}
+        
+            <div class="col-sm-6 col-md-4">
+                <h2>{% trans "Profitability" %}</h2>
+                <table class="table table-hover">
+                    <tr><td>{% trans "Sold" %}</td>
+                    <td>{% if mission.price %}{{ mission.price }}  k€ {% ifequal mission.billing_mode "TIME_SPENT" %}{% trans "(maximum)" %}{% endifequal %}
+                        {% else %} <a href="{% url 'staffing:mission_update' mission.id %}?return_to={% url 'staffing:mission_home' mission.id %}#goto_tab-timesheet">{% trans "To be defined" %}</a>
+                        {% endif %}</td></tr>
+                    {% ifequal mission.billing_mode "FIXED_PRICE" %}
+                        <tr><td>{% trans "Margin" %}</td><td>{{ margin }}  k€</td></tr>
+                        <tr><td>{% trans "Average daily rate" %}</td><td>{{ avg_daily_rate }}  €</td></tr>
+                    {% else %}
+                        <tr><td>{% trans "Currently unused" %}</td><td>{{ current_unused }} k€</td></tr>
+                        <tr><td>{% trans "Forecasted unused" %}</td><td>{{ forecasted_unused }} k€</td></tr>
+                    {% endifequal %}
+                </table>
+            </div>
+
+            <div class="col-sm-6 col-md-4 col-md-offset-2 col-sm-offset-0 col-xs-offset-0">
+                <h2>{% trans "Margin over rate objective" %}</h2>
+                <table class="table table-hover">
+                {% for consultant, consultant_objective_margin in objective_margin.items %}
+                    <tr>
+                    <td>{{ consultant }}</td>
+                    <td>{{ consultant_objective_margin }} €</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th>{% trans "Total" %}</th>
+                    <th>{{ objective_margin_total }} €</th>
+                </tr>
+                </table>
+            </div>
+        
+    {% endif %}
+
+<script type="text/javascript">
+<!--
+
+$(document).ready(function() {
+    function toggleFirstMonths(n) {
+        // Toggle n first months visibility
+        for (i = 2; i < n+1; i++) {
+            $('.pydici-mission-timesheet td:nth-child('+i+')').toggle();
+            }
+    }
+    var doneDaysTitle = $('.pydici-mission-timesheet tr:eq(0) th:eq(1)');
+    var forecastedDaysTitle = $('.pydici-mission-timesheet tr:eq(0) th:eq(3)');
+    var doneCol=parseInt(doneDaysTitle.attr('colspan'));
+    var forecastCol=parseInt(forecastedDaysTitle.attr('colspan'));
+    var maxcol = 20; // Beyond maxcol, we hide first column
+    if ((doneCol + forecastCol) > maxcol) {
+        var n = doneCol + forecastCol - maxcol +1;
+        n = Math.max(n, 2); // Never hide less than 1 col
+        if (n > doneCol-2) {
+            n = 2; // Table has very few done days. Don't hide more than 1 col
+        }
+        toggleFirstMonths(n);
+        doneDaysTitle.attr('colspan', parseInt(doneDaysTitle.attr('colspan')) - n + 1); // reduce colspan of done days title (th)
+
+        var newFirstMonth = $('.pydici-mission-timesheet tr:eq(1) td:eq('+n+')');
+        newFirstMonth.html("<span id='show-more-timesheet', title='{% trans 'Click to show past timesheet' %}'>...</span> " + newFirstMonth.html());
+        $('#show-more-timesheet').tooltip({"container": "body"});
+        newFirstMonth.on("click", function() {
+            toggleFirstMonths(n);
+            doneDaysTitle.attr('colspan', parseInt(doneDaysTitle.attr('colspan')) + n -1); // reset colspan of done days title (th) to normal size
+            $('#show-more-timesheet').hide();
+            });
+    }
+});
+-->
+</script>
+
+<div style="clear:both;"></div>
+
+<div id="mission_timesheet_graph"></div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+var chart = c3.generate({
+    bindto: '#mission_timesheet_graph',
+    data: {
+         /*xs: {
+            dataStaffing: 'dateStaffing',
+            dataTimesheet: 'dateTimesheet',
+            }, */
+        x: 'dates',
+        columns: {{ graph_data|safe }},
+        names : {
+            dataStaffing: '{% trans "To be done" %}',
+            dataTimesheet: '{% trans "done" %}',
+            },
+        type: 'area',
+        groups: [['dataTimesheet', 'dataStaffing']],
+    },
+    axis: {
+         x: {
+                 type: 'timeseries',
+                 tick: {
+                   format: '%m-%Y',
+                   rotate: 60,
+                    }
+            },
+        y: {
+             tick: { format: function (d) { return d + " k€"; } }
+           },
+    },
+});
+
+}); // End of ready()
+</script>

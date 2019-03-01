@@ -1,0 +1,75 @@
+{# This template fragment can be included to display lead billing #}
+{# Context/Argument: lead object #}
+
+{% load i18n %}
+
+    <h3>{% trans "Clients bills" %}</h3>
+    {% with lead.clientbill_set.all as client_bills %}
+    {% if client_bills %}
+    <table class="table table-hover table-striped table-condensed">
+        <tr>
+            <th>{% trans "Bill id" %}</th>
+            <th>{% trans "State" %}</th>
+            <th>{% trans "Amount (€ excl tax)" %}</th>
+            <th>{% trans "Creation date" %}</th>
+            <th>{% trans "Due date" %}</th>
+            <th>{% trans "Payment date" %}</th>
+            <th>{% trans "Comment" %}</th>
+            <th>{% trans "File" %}</th>
+        </tr>
+            {% for bill in client_bills %}
+                <tr>
+                    <td><a href="{% url 'billing:client_bill' bill.id %}">{{ bill }}</a></td>
+                    <td>{{ bill.get_state_display }}</td>
+                    <td>{{ bill.amount|floatformat:-2 }}</td>
+                    <td>{{ bill.creation_date }}</td>
+                    <td>{{ bill.due_date }}</td>
+                    <td>{{ bill.payment_date }}</td>
+                    <td>{{ bill.comment }}</td>
+                    <td><a href='{{ bill.bill_file_url }}'><span class="glyphicon glyphicon-file"></span></a></td>
+                </tr>
+            {% endfor %}
+    </table>
+    <p><strong>{% trans "Total" %}: {{ lead.billed|floatformat:-2 }} €</strong></p>
+    <p><strong>{% trans "Still to be billed" %}: {{ lead.still_to_be_billed|floatformat:-2 }} €</strong></p>
+
+    {% else %}
+            <p>{% trans "No bill yet" %}</p>
+    {% endif %}
+    {% endwith %}
+
+    <h3>{% trans "Suppliers bills" %}</h3>
+    {% with lead.supplierbill_set.all as supplier_bills %}
+    {% if supplier_bills %}
+    <table class="table table-hover table-striped table-condensed">
+        <tr>
+            <th>{% trans "Bill id" %}</th>
+            <th>{% trans "Supplier" %}</th>
+            <th>{% trans "Supplier Bill id" %}</th>
+            <th>{% trans "State" %}</th>
+            <th>{% trans "Amount (€ excl tax)" %}</th>
+            <th>{% trans "Creation date" %}</th>
+            <th>{% trans "Due date" %}</th>
+            <th>{% trans "Payment date" %}</th>
+            <th>{% trans "Comment" %}</th>
+            <th>{% trans "File" %}</th>
+        </tr>
+            {% for bill in supplier_bills %}
+                <tr>
+                    <td><a href="{% url 'admin:billing_supplierbill_change' bill.id %}">{{ bill }}</a></td>
+                    <td>{{ bill.supplier }}</td>
+                    <td>{{ bill.supplier_bill_id }}</td>
+                    <td>{{ bill.get_state_display }}</td>
+                    <td style="text-align: right">{{ bill.amount|floatformat:-2 }}</td>
+                    <td>{{ bill.creation_date }}</td>
+                    <td>{{ bill.due_date }}</td>
+                    <td>{{ bill.payment_date }}</td>
+                    <td>{{ bill.comment }}</td>
+                    <td><a href='{{ bill.bill_file_url }}'><span class="glyphicon glyphicon-file"></span></a></td>
+                </tr>
+            {% endfor %}
+    </table>
+    {% else %}
+            <p>{% trans "No bill yet" %}</p>
+    {% endif %}
+    {% endwith %}

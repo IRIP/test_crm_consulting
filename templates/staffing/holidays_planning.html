@@ -1,0 +1,56 @@
+{% extends "core/pydici.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Holidays planning" %}{% endblock %}
+
+{% block content %}
+
+<h1>
+<ul class="pager" style="text-align:left">
+    <li class="pydici-tooltip" title="{% trans 'Previous month' %}"><a href="{% url 'staffing:holidays_planning' year=previous_month|date:'Y' month=previous_month|date:'m' %}"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+    {% trans "Holidays planning" %} {{ month|date:"F Y"}}
+    <li class="pydici-tooltip" title="{% trans 'Next month' %}"><a href="{% url 'staffing:holidays_planning' year=next_month|date:'Y' month=next_month|date:'m' %}"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+</ul>
+</h1>
+
+<div class="table-responsive">
+    <table class="table table-hover table-pydici-extra-condensed table-holidays">
+    <thead>
+        <tr><td></td>
+        {% for day in days %}
+            <th>{{ day|date:"j" }}</th>
+        {% endfor %}
+        </tr>
+        <tr>
+        <td></td>
+        {% for day in days %}
+            <td class="timesheet-long-day">{{ day|date:"D" }}</td>
+        {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in data %}
+        <tr>
+            {% for item in line %}
+                {% if forloop.first %}
+                    <td class="holidays-consultant-name">
+                        {% with consultant=item %}{% include "people/__consultant_name.html" %}{% endwith %}
+                    </td>
+                {% else %}<td class="timesheet-day" style='background:{{ item }}'>  </td>{% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% include "core/_highlight_column.html" %}
+<script type="text/javascript">
+ if (0 !== {{ today }}) {
+     // First column is consulant's name
+     highlight_today({{ today }} + 1, "2px solid #555");
+ }
+</script>
+
+{% endblock %}

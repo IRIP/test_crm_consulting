@@ -1,0 +1,23 @@
+{% load i18n %}
+{% autoescape off %}
+{{ obj.client.organisation }} - {{ obj.name }} ({{ obj.deal_id }})
+
+{% trans "Contact: " %}{{ obj.client.contact }} {% if lead.client.contact.function %} ({{ lead.client.contact.function }}) {% endif %}
+
+{% trans "Description: " %}{{ obj.description }}
+
+{% trans "Responsible: " %}{% if obj.responsible %} {{ obj.responsible }} {% else %} {% trans "To be defined" %}{% endif %}
+
+{% trans "Salesman: " %}{% if obj.salesman %} {{ obj.salesman }} {% else %} {% trans "None" %} {% endif %}
+
+{% trans "Status: " %}{{ obj.get_state_display }} {% if obj.due_date %}(=>  {{ obj.due_date }}){% endif %} / {% trans "Start date: " %} {% if obj.start_date %} {{ obj.start_date }} {% else %} {% trans "To be defined" %} {% endif %}
+
+{% trans "Sales (kEuros): " %}{% if obj.sales %} {{ obj.sales }} {% else %} {% trans "Unknown" %} {% endif %}
+
+{% trans "Potential resource(s): " %}{{ obj.staffing_list }}
+
+{% trans "Action: " %}{% if obj.action %}{{ obj.action }}{% else %}{% trans "None" %}{% endif %}
+
+
+{% trans "Change this lead: " %}{{ lead_url }}
+{% endautoescape %}

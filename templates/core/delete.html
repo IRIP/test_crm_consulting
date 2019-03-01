@@ -1,0 +1,20 @@
+{% extends "core/pydici.html" %}
+{# Standard pydici delete confirmation for generic views #}
+
+{% load i18n %} 
+
+{% block title %}{% blocktrans %}Deletion of {{ object }}{% endblocktrans %}{% endblock %}
+
+{% block content %}
+
+<form method="post">{% csrf_token %}
+    {% blocktrans %}
+    Do you really want to delete "{{ object }}" ?
+    {% endblocktrans %}
+    <br/><br/>
+    <button type="submit" class="btn btn-danger">{% trans 'Yes' %}</button>
+    <script type="text/javascript" >
+       document.write('<a role="button" class="btn btn-default" href="' + document.referrer + '">{% trans 'No' %}</a>');
+    </script>
+</form>
+{% endblock %}

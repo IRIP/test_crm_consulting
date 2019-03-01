@@ -1,0 +1,40 @@
+{% extends "core/pydici.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Payment delay review" %}{% endblock %}
+
+{% block content %}
+<br/><br/>
+<div id="content-main">
+    <div class="imodule" style="float:left;">
+        <table>
+        <caption>{% trans "Direct clients" %}</caption>
+        <tr>
+                <td><b>{% trans "Client" %}</b></td>
+                <td><b>{% trans "Average payment delay" %}</b></td>
+        </tr>
+        {% for company, delay in direct_delays %}
+            <tr>
+                <td><a href="{% url 'crm:company_detail' company.id %}#tab-billing">{{ company }}</a></td>
+                <td>{{ delay }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+    <div style="float:left;">&nbsp;&nbsp;&nbsp;</div>
+    <div class="imodule" style="float:left;">
+        <table>
+        <caption>{% trans "Paying authorities" %}</caption>
+        <tr>
+                <td><b>{% trans "Paying authority" %}</b></td>
+                <td><b>{% trans "Average payment delay" %}</b></td>
+        </tr>
+        {% for authority, delay in indirect_delays %}
+            <tr>
+                <td>{{ authority }}</td>
+                <td>{{ delay }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+{% endblock %}

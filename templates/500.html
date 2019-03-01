@@ -1,0 +1,19 @@
+{% extends "core/pydici.html" %}
+{% load i18n %}
+
+{% block stylesheet %}{{ MEDIA_URL }}css/dashboard.css{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+{% blocktrans %}
+<h1>Sorry, this is an application error</h1>
+<h2>Administrators have been warned by email of this error</h2>
+<p>Don't hesitate to contact them to explain conditions that lead
+to that error in order to help help diagnotics.</p>
+{% endblocktrans %}
+</div>
+{% endblock %}
